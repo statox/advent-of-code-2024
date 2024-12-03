@@ -34,8 +34,10 @@ def get_process(day: int, part: int, livemode: bool):
     return subprocess.run(
         shlex.split(make_command(day, part, livemode)),
         capture_output=True,
-        text=True
+        text=True,
+        check=False,
     )
+
 
 # tests
 
