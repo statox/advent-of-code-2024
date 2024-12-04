@@ -1,7 +1,8 @@
-from ..base import BaseSolution
+from ..base import BaseSolution, answer
 
 
 class Solution(BaseSolution):
+    @answer(11, 2769675)
     def part1(self):
         left = []
         right = []
@@ -20,10 +21,9 @@ class Solution(BaseSolution):
             # print(left[i], right[i], diff)
             total += diff
 
-        # livemode false: 11
-        # livemode true: 2769675
         return total
 
+    @answer(31, 24643097)
     def part2(self):
         left = []
         rightCount = {}
@@ -39,6 +39,4 @@ class Solution(BaseSolution):
             # print(a, score)
             total += score
 
-        # livemode false: 31
-        # livemode true: 24643097
         return total

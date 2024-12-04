@@ -1,6 +1,6 @@
 import re
 
-from ..base import BaseSolution
+from ..base import BaseSolution, answer
 
 
 def evaluatePart(part: str):
@@ -12,13 +12,13 @@ def evaluatePart(part: str):
 
 
 class Solution(BaseSolution):
+    @answer(161, 173731097)
     def part1(self):
         line = self.lines[0]
 
-        # livemode false: 161
-        # livemode true: 173731097
         return evaluatePart(line)
 
+    @answer(48, 93729253)
     def part2(self):
         line = self.lines[0]
 
@@ -27,8 +27,6 @@ class Solution(BaseSolution):
         parts = re.split(dodontre, line)
         zipped = zip(delims, parts)
 
-        # livemode false: 48
-        # livemode true: 93729253
         return sum([evaluatePart(part) if op == "do()" else 0 for (op, part) in zipped])
 
         # Dumb one liner version

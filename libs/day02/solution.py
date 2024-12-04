@@ -1,4 +1,4 @@
-from ..base import BaseSolution
+from ..base import BaseSolution, answer
 
 
 def isValidReport(report):
@@ -7,7 +7,7 @@ def isValidReport(report):
         # print('not sorted', report)
         return False
 
-    diffs = [abs(report[i] - report[i+1]) for i in range(len(report) - 1)]
+    diffs = [abs(report[i] - report[i + 1]) for i in range(len(report) - 1)]
 
     if max(diffs) > 3:
         # print('diff more than 3', report)
@@ -21,6 +21,7 @@ def isValidReport(report):
 
 
 class Solution(BaseSolution):
+    @answer(2, 559)
     def part1(self):
         safe_reports = 0
 
@@ -28,10 +29,9 @@ class Solution(BaseSolution):
             if isValidReport(report):
                 safe_reports += 1
 
-        # livemode false: 2
-        # livemode true: 559
         return safe_reports
 
+    @answer(4, 601)
     def part2(self):
         safe_reports = 0
 
@@ -52,6 +52,4 @@ class Solution(BaseSolution):
                     safe_reports += 1
                     break
 
-        # livemode false: 4
-        # livemode true: 601
         return safe_reports

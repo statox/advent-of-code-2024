@@ -46,7 +46,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     lines = read_input_file(args.day, args.livemode)
-    solution = solution_class(lines)
+    solution = solution_class(lines, args.livemode)
 
     res = solution.part1() if args.part == 1 else solution.part2()
 
