@@ -26,14 +26,17 @@ parser.add_argument(
     choices=[1, 2],
     help="The question to run",
 )
-parser.add_argument(
+
+# Make -l and -b mutually exclusive
+modesGroup = parser.add_mutually_exclusive_group()
+modesGroup.add_argument(
     "-l",
     "--livemode",
     dest="livemode",
     action="store_true",
     help="True to use real input, False to use test input",
 )
-parser.add_argument(
+modesGroup.add_argument(
     "-b",
     "--bothmode",
     dest="bothmode",
@@ -64,10 +67,6 @@ def runMode(day: int, livemode: bool, part: Optional[int]):
 
 if __name__ == "__main__":
     args = parser.parse_args()
-
-    if args.bothmode and args.livemode:
-        print("ERROR: Can't define both -b and -l")
-        sys.exit(1)
 
     if args.bothmode:
         runMode(args.day, False, args.part)

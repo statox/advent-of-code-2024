@@ -89,8 +89,11 @@ class Part_Tests(unittest.TestCase):
 class Mode_Tests(unittest.TestCase):
     def test_forbid_bothmodes_and_livemode(self):
         process = get_process(day=1, bothmodes=True, livemode=True, part=1)
-        expected_output = "ERROR: Can't define both -b and -l"
-        self.assertEqual(process.stdout.strip(), expected_output)
+        self.assertEqual(process.returncode, 2)
+        self.assertEqual(
+            process.stderr.split("\n")[-2].strip(),
+            "main.py: error: argument -b/--bothmode: not allowed with argument -l/--livemode",
+        )
 
     def test_day1_part1_bothmodes(self):
         process = get_process(day=1, bothmodes=True, part=1)
