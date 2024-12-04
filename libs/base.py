@@ -1,5 +1,7 @@
 import functools
 
+from typing import Literal
+
 
 class InvalidSolutionError(Exception):
     def __init__(self, expected: int, actual: int):
@@ -46,3 +48,16 @@ class BaseSolution:
     @answer(0, 0)
     def part2(self) -> int:
         raise NotImplementedError
+
+    def runPart(self, which: Literal["one", "two", "both"]):
+        if which in ["one", "both"]:
+            res = self.part1()
+            print(
+                f"Result for day {self.day} - part 1 - livemode {self.livemode}: {res}"
+            )
+
+        if which in ["two", "both"]:
+            res = self.part2()
+            print(
+                f"Result for day {self.day} - part 2 - livemode {self.livemode}: {res}"
+            )

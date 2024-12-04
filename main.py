@@ -54,21 +54,12 @@ def getSolution(day: int, livemode: bool):
     return solution_class(lines, livemode, day)
 
 
-def runPart(solution: BaseSolution, part: int):
-    res = solution.part1() if part == 1 else solution.part2()
-
-    print(
-        f"Result for day {solution.day} - part {part} - livemode {solution.livemode}: {res}"
-    )
-
-
 def runMode(day: int, livemode: bool, part: Optional[int]):
     solution = getSolution(day, livemode)
     if part is None:
-        runPart(solution, 1)
-        runPart(solution, 2)
+        solution.runPart("both")
     else:
-        runPart(solution, part)
+        solution.runPart("one" if part == 1 else "two")
 
 
 if __name__ == "__main__":
@@ -81,7 +72,5 @@ if __name__ == "__main__":
     if args.bothmode:
         runMode(args.day, False, args.part)
         runMode(args.day, True, args.part)
-    elif args.livemode:
-        runMode(args.day, True, args.part)
     else:
-        runMode(args.day, False, args.part)
+        runMode(args.day, args.livemode, args.part)
