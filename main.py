@@ -3,7 +3,7 @@
 import sys
 from argparse import ArgumentParser
 from importlib import import_module
-from typing import Type, cast
+from typing import Optional, Type, cast
 
 from common.io import read_input_file
 from libs.base import BaseSolution
@@ -22,7 +22,6 @@ parser.add_argument(
     "-p",
     "--part",
     dest="part",
-    required=True,
     type=int,
     choices=[1, 2],
     help="The question to run",
@@ -34,22 +33,55 @@ parser.add_argument(
     action="store_true",
     help="True to use real input, False to use test input",
 )
+parser.add_argument(
+    "-b",
+    "--bothmode",
+    dest="bothmode",
+    action="store_true",
+    help="True to run both livemode and testmode",
+)
 
-if __name__ == "__main__":
-    args = parser.parse_args()
 
+def getSolution(day: int, livemode: bool):
     try:
-        path = f"libs.day{args.day:02}.solution"
+        path = f"libs.day{day:02}.solution"
         solution_class = cast(Type[BaseSolution], import_module(path).Solution)
     except ModuleNotFoundError:
         print(f"ERROR: Day {args.day} is not implemented")
         sys.exit(1)
 
-    lines = read_input_file(args.day, args.livemode)
-    solution = solution_class(lines, args.livemode)
+    lines = read_input_file(day, livemode)
+    return solution_class(lines, livemode, day)
 
-    res = solution.part1() if args.part == 1 else solution.part2()
+
+def runPart(solution: BaseSolution, part: int):
+    res = solution.part1() if part == 1 else solution.part2()
 
     print(
-        f"Result for day {args.day} - part {args.part} - livemode {args.livemode}: {res}"
+        f"Result for day {solution.day} - part {part} - livemode {solution.livemode}: {res}"
     )
+
+
+def runMode(day: int, livemode: bool, part: Optional[int]):
+    solution = getSolution(day, livemode)
+    if part is None:
+        runPart(solution, 1)
+        runPart(solution, 2)
+    else:
+        runPart(solution, part)
+
+
+if __name__ == "__main__":
+    args = parser.parse_args()
+
+    if args.bothmode and args.livemode:
+        print("ERROR: Can't define both -b and -l")
+        sys.exit(1)
+
+    if args.bothmode:
+        runMode(args.day, False, args.part)
+        runMode(args.day, True, args.part)
+    elif args.livemode:
+        runMode(args.day, True, args.part)
+    else:
+        runMode(args.day, False, args.part)

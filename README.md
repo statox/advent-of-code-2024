@@ -20,14 +20,15 @@ To add a solution for a new day
 - Run the code for the day with
 
   ```bash
-  ./main.py -d [day] -p [part] [-l or --livemode]
+  ./main.py -d [day] -p [part] [-l or --livemode] [-b or --bothmode]
   ```
 
   where
 
   - `[day]` is the current day without the leading `0`
-  - `[part]` is `1` or `2`
-  - `[--livemode]` if present reads the `input` file, if not reads the `input_test`
+  - (Optional) `[part]` is `1` or `2`. If omitted both parts are run.
+  - (Optional) `[--livemode]` if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`
+  - (Optional) `[--bothmode]` if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]`
 
 Run the tests with (I created them to make sure my structure and `main.py` were correct, they might not be useful in the future)
 

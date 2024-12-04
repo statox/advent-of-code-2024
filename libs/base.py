@@ -32,10 +32,12 @@ def answer(expectedAnswerTest: int, expectedAnswerLivemode: int):
 class BaseSolution:
     lines: list[str]
     livemode: bool
+    day: int
 
-    def __init__(self, lines: list[str], livemode: bool):
+    def __init__(self, lines: list[str], livemode: bool, day: int):
         self.lines = lines
         self.livemode = livemode
+        self.day = day
 
     @answer(0, 0)
     def part1(self) -> int:

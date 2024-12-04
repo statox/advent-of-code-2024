@@ -32,28 +32,28 @@ class UnknownSolution(BaseSolution):
 class Solution_Tests(unittest.TestCase):
     def test_decorated_valid(self):
         """Decorated solution returning the expected value should not throw"""
-        DecoratedSolution([], False).part1()
-        DecoratedSolution([], True).part1()
+        DecoratedSolution([], False, 1).part1()
+        DecoratedSolution([], True, 1).part1()
 
     def test_decorated_invalid(self):
         """Decorated solution returning unexpected value should throw"""
         # These calls should not raise an exception
 
         with self.assertRaises(InvalidSolutionError):
-            DecoratedSolution([], False).part2()
+            DecoratedSolution([], False, 1).part2()
 
         with self.assertRaises(InvalidSolutionError):
-            DecoratedSolution([], True).part2()
+            DecoratedSolution([], True, 1).part2()
 
     def test_undecorated_implemented(self):
         """Undecorated solution implemented method should never throw"""
-        UnknownSolution([], False).part1()
-        UnknownSolution([], True).part1()
+        UnknownSolution([], False, 1).part1()
+        UnknownSolution([], True, 1).part1()
 
     def test_undecorated_not_implemented(self):
         """Undecorated solution not implemented method should throw"""
         with self.assertRaises(NotImplementedError):
-            UnknownSolution([], False).part2()
+            UnknownSolution([], False, 1).part2()
 
 
 if __name__ == "__main__":
