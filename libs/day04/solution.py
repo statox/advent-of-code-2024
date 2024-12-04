@@ -10,41 +10,38 @@ class Solution(BaseSolution):
         H = len(l)
         W = len(l[0])
         total = 0
+        search = list("XMAS")
+        r = range(4)
+
         for y in range(H):
             for x in range(W):
                 if l[y][x] != "X":
                     continue
 
                 if x < W - 3:
-                    if y > 2 and "".join([l[y - i][x + i] for i in range(4)]) == "XMAS":
+                    if y > 2 and [l[y - i][x + i] for i in r] == search:
                         total += 1
 
-                    if l[y][x : x + 4] == "XMAS":
+                    if [l[y][x + i] for i in r] == search:
                         total += 1
 
-                    if (
-                        y < H - 3
-                        and "".join([l[y + i][x + i] for i in range(4)]) == "XMAS"
-                    ):
+                    if y < H - 3 and [l[y + i][x + i] for i in r] == search:
                         total += 1
 
-                if y > 2 and "".join([l[y - i][x] for i in range(4)]) == "XMAS":
+                if y > 2 and [l[y - i][x] for i in r] == search:
                     total += 1
 
-                if y < H - 3 and "".join([l[y + i][x] for i in range(4)]) == "XMAS":
+                if y < H - 3 and [l[y + i][x] for i in r] == search:
                     total += 1
 
                 if x > 2:
-                    if y > 2 and "".join([l[y - i][x - i] for i in range(4)]) == "XMAS":
+                    if y > 2 and [l[y - i][x - i] for i in r] == search:
                         total += 1
 
-                    if l[y][x - 3 : x + 1] == "SAMX":
+                    if [l[y][x - i] for i in r] == search:
                         total += 1
 
-                    if (
-                        y < H - 3
-                        and "".join([l[y + i][x - i] for i in range(4)]) == "XMAS"
-                    ):
+                    if y < H - 3 and [l[y + i][x - i] for i in r] == search:
                         total += 1
 
         return total
@@ -66,7 +63,7 @@ class Solution(BaseSolution):
                         "".join(letters)
                         # We use zip to re-pack both branches of the X together
                         for letters in zip(
-                            # We get 3 tuples of the letters of both branches of the X for left to right
+                            # We get 3 tuples of the letters of both branches of the X from left to right
                             *[(l[y + i][x + i], l[y - i][x + i]) for i in range(-1, 2)]
                         )
                     ]
