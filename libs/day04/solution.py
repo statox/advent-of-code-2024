@@ -1,7 +1,8 @@
-from ..base import BaseSolution
+from ..base import BaseSolution, answer
 
 
 class Solution(BaseSolution):
+    @answer(18, 2483)
     def part1(self):
         l = self.lines
         H = len(l)
@@ -44,10 +45,9 @@ class Solution(BaseSolution):
                     ):
                         total += 1
 
-        # livemode false: 18
-        # livemode true: 2483
         return total
 
+    @answer(9, 1925)
     def part2(self):
         l = self.lines
         H = len(l)
@@ -66,6 +66,4 @@ class Solution(BaseSolution):
                 if d1 in s and d2 in s:
                     total += 1
 
-        # livemode false: 9
-        # livemode true: 1925
         return total
