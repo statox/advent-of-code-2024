@@ -2,6 +2,7 @@
 
 import sys
 from argparse import ArgumentParser
+from datetime import datetime
 from importlib import import_module
 from typing import Optional, Type, cast
 
@@ -16,6 +17,15 @@ parser.add_argument(
     type=int,
     choices=list(range(1, 26)),
     help="The day to execute",
+)
+parser.add_argument(
+    "-y",
+    "--year",
+    dest="year",
+    required=False,
+    type=str,
+    help="The year of the day to execute",
+    default=datetime.now().year,
 )
 parser.add_argument(
     "-p",
@@ -44,19 +54,19 @@ modesGroup.add_argument(
 )
 
 
-def getSolution(day: int, livemode: bool):
+def getSolution(year: str, day: int, livemode: bool):
     try:
-        path = f"libs.day{day:02}.solution"
+        path = f"libs.{year}.day{day:02}.solution"
         solution_class = cast(Type[BaseSolution], import_module(path).Solution)
     except ModuleNotFoundError:
-        print(f"ERROR: Day {args.day} is not implemented")
+        print(f"ERROR: Day {args.day}/{year} is not implemented")
         sys.exit(1)
 
-    return solution_class(livemode, day)
+    return solution_class(livemode, day, int(year))
 
 
-def runMode(day: int, livemode: bool, part: Optional[int]):
-    solution = getSolution(day, livemode)
+def runMode(year: str, day: int, livemode: bool, part: Optional[int]):
+    solution = getSolution(year, day, livemode)
     if part is None:
         solution.runPart("both")
     else:
@@ -67,7 +77,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.bothmode:
-        runMode(args.day, False, args.part)
-        runMode(args.day, True, args.part)
+        runMode(args.year, args.day, False, args.part)
+        runMode(args.year, args.day, True, args.part)
     else:
-        runMode(args.day, args.livemode, args.part)
+        runMode(args.year, args.day, args.livemode, args.part)

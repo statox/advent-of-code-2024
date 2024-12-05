@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 
-from ..base import BaseSolution, answer
+from ...base import BaseSolution, answer
 
 
 def parseLines(lines: list[str]):

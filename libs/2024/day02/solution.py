@@ -1,4 +1,4 @@
-from ..base import BaseSolution, answer
+from ...base import BaseSolution, answer
 
 
 def isValidReport(report):

@@ -24,18 +24,36 @@ validate_day() {
     fi
 }
 
+validate_year() {
+    local year=$1
+    if [ -z "$year" ]; then
+        # That should not happen since we setup a default value to the current year
+        echo "Error: Year argument is required and the default value is not defined"
+        exit 1
+    fi
+
+    if ! is_integer "$year"; then
+        echo "Error: Year must be an integer"
+        exit 1
+    fi
+}
+
 # Get the script directory
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # Validate day argument
-if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 <day>"
+if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: <day> [<year>]"
     exit 1
 fi
-validate_day "$1"
+day="$1"
+validate_day "$day"
+year="${2:-$(date +%Y)}"
+validate_year "$year"
 
 # Create paths
-CODE_PATH="$SCRIPT_DIR/libs/day$(printf '%02d' "$1")"
+YEAR_PATH="$SCRIPT_DIR/libs/$year"
+CODE_PATH="$YEAR_PATH/day$(printf '%02d' "$day")"
 
 # Check if paths already exist
 if [ -d "$CODE_PATH" ]; then

@@ -48,8 +48,11 @@ class BaseSolution:
     lines: list[str]
     livemode: bool
     day: int
+    year: int
 
-    def __init__(self, livemode: bool, day: int, lines: Optional[list[str]] = None):
+    def __init__(
+        self, livemode: bool, day: int, year: int, lines: Optional[list[str]] = None
+    ):
         if lines is None:
             inputFile = "input" if livemode else "input_test"
             inputPath = Path(self.getOwnPath(), inputFile)
@@ -57,8 +60,10 @@ class BaseSolution:
             self.lines = read_input_file(inputPath)
         else:
             self.lines = lines
+
         self.livemode = livemode
         self.day = day
+        self.year = year
 
     @classmethod
     def getOwnPath(cls):
@@ -80,11 +85,11 @@ class BaseSolution:
         if which in ["one", "both"]:
             res = self.part1()
             print(
-                f"Result for day {self.day} - part 1 - livemode {self.livemode}: {res}"
+                f"Result for day {self.day}/{self.year} - part 1 - livemode {self.livemode}: {res}"
             )
 
         if which in ["two", "both"]:
             res = self.part2()
             print(
-                f"Result for day {self.day} - part 2 - livemode {self.livemode}: {res}"
+                f"Result for day {self.day}/{self.year} - part 2 - livemode {self.livemode}: {res}"
             )

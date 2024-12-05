@@ -1,6 +1,6 @@
 import re
 
-from ..base import BaseSolution, answer
+from ...base import BaseSolution, answer
 
 
 def evaluatePart(part: str):
