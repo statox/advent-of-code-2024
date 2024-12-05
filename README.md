@@ -3,7 +3,7 @@
 ## Add a solution for a new day
 
 1. Run the script `./newDay [day]` with `[day]` the day to implement (`1 <= day <= 25`)
-1. Edit `data/dayXX/input` and `data/dayXX/input_test` with the input
+1. Edit `libs/dayXX/input` and `libs/dayXX/input_test` with the input
 1. Edit `libs/dayXX/solution.py` with the code implementing the methods `part1` and `part2`
 1. Run the code for the day with
 

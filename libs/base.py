@@ -1,5 +1,7 @@
 import functools
-from typing import Literal
+import inspect
+from pathlib import Path
+from typing import Literal, Optional
 
 
 class InvalidSolutionError(Exception):
@@ -30,15 +32,41 @@ def answer(expectedAnswerTest: int, expectedAnswerLivemode: int):
     return decorator
 
 
+def read_input_file(path: Path):
+    try:
+        with Path.open(path, "r") as file:
+            return [line.strip() for line in file]
+    except FileNotFoundError:
+        print(f"The file {path} was not found.")
+        raise
+    except IOError:
+        print("An error occurred while reading the file.")
+        raise
+
+
 class BaseSolution:
     lines: list[str]
     livemode: bool
     day: int
 
-    def __init__(self, lines: list[str], livemode: bool, day: int):
-        self.lines = lines
+    def __init__(self, livemode: bool, day: int, lines: Optional[list[str]] = None):
+        if lines is None:
+            inputFile = "input" if livemode else "input_test"
+            inputPath = Path(self.getOwnPath(), inputFile)
+
+            self.lines = read_input_file(inputPath)
+        else:
+            self.lines = lines
         self.livemode = livemode
         self.day = day
+
+    @classmethod
+    def getOwnPath(cls):
+        module = inspect.getmodule(cls)
+        if module is None or module.__file__ is None:
+            raise Exception("Couldnt get class path")
+
+        return Path(module.__file__).parent
 
     @answer(0, 0)
     def part1(self) -> int:

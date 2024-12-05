@@ -36,16 +36,15 @@ validate_day "$1"
 
 # Create paths
 CODE_PATH="$SCRIPT_DIR/libs/day$(printf '%02d' "$1")"
-DATA_PATH="$SCRIPT_DIR/data/day$(printf '%02d' "$1")"
 
 # Check if paths already exist
-if [ -d "$CODE_PATH" ] || [ -d "$DATA_PATH" ]; then
-    echo "Error: Directory code or data directory already exists"
+if [ -d "$CODE_PATH" ]; then
+    echo "Error: Code directory already exists"
     exit 1
 fi
 
 # Create directories
-mkdir -p "$CODE_PATH" "$DATA_PATH"
+mkdir -p "$CODE_PATH"
 
 # Create templatesPath
 TEMPLATES_PATH="$SCRIPT_DIR/data/templates"
@@ -63,9 +62,8 @@ for file in $files; do
 done
 
 # Create input and input_test files in dataPath
-touch "$DATA_PATH/input"
-touch "$DATA_PATH/input_test"
+touch "$CODE_PATH/input"
+touch "$CODE_PATH/input_test"
 
-echo "Directories created successfully:"
+echo "Files created successfully in:"
 echo "$CODE_PATH"
-echo "$DATA_PATH"

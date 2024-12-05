@@ -5,7 +5,6 @@ from argparse import ArgumentParser
 from importlib import import_module
 from typing import Optional, Type, cast
 
-from common.io import read_input_file
 from libs.base import BaseSolution
 
 parser = ArgumentParser()
@@ -53,8 +52,7 @@ def getSolution(day: int, livemode: bool):
         print(f"ERROR: Day {args.day} is not implemented")
         sys.exit(1)
 
-    lines = read_input_file(day, livemode)
-    return solution_class(lines, livemode, day)
+    return solution_class(livemode, day)
 
 
 def runMode(day: int, livemode: bool, part: Optional[int]):
