@@ -97,6 +97,9 @@ class BaseSolution:
 
         if which in ["two", "both"]:
             if not self.livemode and self.lines_alt is not None:
+                print(
+                    "WARNING: Using input_test_2 file as input. Remove it if to use input_test instead."
+                )
                 self.lines = self.lines_alt
 
             res = self.part2()
