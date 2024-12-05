@@ -46,6 +46,7 @@ def read_input_file(path: Path):
 
 class BaseSolution:
     lines: list[str]
+    lines_alt: list[str] | None
     livemode: bool
     day: int
     year: int
@@ -53,13 +54,19 @@ class BaseSolution:
     def __init__(
         self, livemode: bool, day: int, year: int, lines: Optional[list[str]] = None
     ):
-        if lines is None:
-            inputFile = "input" if livemode else "input_test"
-            inputPath = Path(self.getOwnPath(), inputFile)
-
+        self.lines_alt = None
+        if lines is not None:
+            self.lines = lines
+        elif livemode:
+            inputPath = Path(self.getOwnPath(), "input")
             self.lines = read_input_file(inputPath)
         else:
-            self.lines = lines
+            inputPath = Path(self.getOwnPath(), "input_test")
+            self.lines = read_input_file(inputPath)
+
+            if Path(self.getOwnPath(), "input_test_2").exists():
+                altInputPath = Path(self.getOwnPath(), "input_test_2")
+                self.lines_alt = read_input_file(altInputPath)
 
         self.livemode = livemode
         self.day = day
@@ -89,6 +96,9 @@ class BaseSolution:
             )
 
         if which in ["two", "both"]:
+            if not self.livemode and self.lines_alt is not None:
+                self.lines = self.lines_alt
+
             res = self.part2()
             print(
                 f"Result for day {self.day}/{self.year} - part 2 - livemode {self.livemode}: {res}"

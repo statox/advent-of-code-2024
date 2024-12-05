@@ -79,9 +79,5 @@ for file in $files; do
     cp "$file" "$CODE_PATH/$FILE_NAME"
 done
 
-# Create input and input_test files in dataPath
-touch "$CODE_PATH/input"
-touch "$CODE_PATH/input_test"
-
 echo "Files created successfully in:"
 echo "$CODE_PATH"
