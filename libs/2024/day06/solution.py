@@ -1,5 +1,5 @@
 from ...base import BaseSolution, answer
-from ...utils import Point
+from ...utils.point import Point
 
 directions = [Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)]
 
