@@ -9,6 +9,25 @@ class Point:
     def __add__(self, other):
         return Point(self.x + other.x, self.y + other.y)
 
+    def __sub__(self, other):
+        return Point(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, multiplier):
+        """For x * 2"""
+        return Point(self.x * multiplier, self.y * multiplier)
+
+    def __rmul__(self, multiplier):
+        """For 2 * x"""
+        return Point(self.x * multiplier, self.y * multiplier)
+
+    def __floordiv__(self, dividor):
+        """For the // operator, returns ints"""
+        return Point(self.x // dividor, self.y // dividor)
+
+    def __truediv__(self, dividor):
+        """For the / operator, returns floats"""
+        return Point(self.x / dividor, self.y / dividor)
+
     def __str__(self):
         return f"({self.x}, {self.y})"
 
@@ -20,6 +39,9 @@ class Point:
 
     def isInBound(self, bound):
         return self.x >= 0 and self.y >= 0 and self.x <= bound.x and self.y <= bound.y
+
+    def isInteger(self):
+        return isinstance(self.x, int) and isinstance(self.y, int)
 
 
 directions = [
