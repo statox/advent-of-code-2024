@@ -36,6 +36,14 @@ class FileSolution(BaseSolution):
         return len(self.lines)
 
 
+class ParsingInputSolution(BaseSolution[list[int]]):
+    def parseInput(self):
+        return [1, 2, 3]
+
+    def part1(self):
+        return sum(self.parsedInput)
+
+
 # tests
 
 
@@ -74,6 +82,11 @@ class Solution_Tests(unittest.TestCase):
         """Solution reads its forced input in both modes"""
         FileSolution(False, 1, 2024, lines=[]).part2()
         FileSolution(True, 1, 2024, lines=["foo"]).part2()
+
+    def test_solution_uses_parseInput_method(self):
+        """Solution uses parseInput() method and puts the result in parsedInput"""
+        s = ParsingInputSolution(False, 1, 2024, lines=[])
+        self.assertEqual(s.parsedInput, [1, 2, 3])
 
 
 if __name__ == "__main__":

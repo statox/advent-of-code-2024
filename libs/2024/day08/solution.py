@@ -4,24 +4,24 @@ from ...base import BaseSolution, answer
 from ...utils.point import Point
 
 
-def getAntennaGroups(lines: list[str]):
-    groups = {}
-    for y, line in enumerate(lines):
-        for x, c in enumerate(line):
-            if c == ".":
-                continue
+class Solution(BaseSolution[dict[str, list[Point]]]):
+    def parseInput(self):
+        groups: dict[str, list[Point]] = {}
+        for y, line in enumerate(self.lines):
+            for x, c in enumerate(line):
+                if c == ".":
+                    continue
 
-            if groups.get(c) is None:
-                groups[c] = []
+                if groups.get(c) is None:
+                    groups[c] = []
 
-            groups[c].append(Point(x, y))
-    return groups
+                groups[c].append(Point(x, y))
 
+        return groups
 
-class Solution(BaseSolution):
     @answer(14, 278)
     def part1(self):
-        groups = getAntennaGroups(self.lines)
+        groups = self.parsedInput
         bound = Point(len(self.lines[0]) - 1, len(self.lines) - 1)
 
         antinodes: set[Point] = set()
@@ -42,7 +42,7 @@ class Solution(BaseSolution):
 
     @answer(34, 1067)
     def part2(self):
-        groups = getAntennaGroups(self.lines)
+        groups = self.parsedInput
         bound = Point(len(self.lines[0]) - 1, len(self.lines) - 1)
 
         antinodes: set[Point] = set()

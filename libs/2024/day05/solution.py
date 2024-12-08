@@ -1,44 +1,39 @@
 from functools import cmp_to_key
+from typing import NamedTuple
 
 from ...base import BaseSolution, answer
 
 
-def parseLines(lines: list[str]):
-    rules: dict[int, set[int]] = {}
-    updates: list[list[int]] = []
-
-    for line in lines:
-        if len(line) == 0:
-            continue
-
-        if "|" in line:
-            [a, b] = list(map(int, line.split("|")))
-
-            if rules.get(b) is None:
-                rules[b] = set()
-            rules[b].add(a)
-        else:
-            update = list(map(int, line.split(",")))
-            updates.append(update)
-
-    return rules, updates
-
-
-class Solution(BaseSolution):
+class ParsedInput(NamedTuple):
     rules: dict[int, set[int]]
     updates: list[list[int]]
 
-    def __init__(self, *args, **kwargs):
-        super(Solution, self).__init__(*args, **kwargs)
 
-        rules, updates = parseLines(self.lines)
-        self.rules = rules
-        self.updates = updates
+class Solution(BaseSolution[ParsedInput]):
+    def parseInput(self):
+        rules: dict[int, set[int]] = {}
+        updates: list[list[int]] = []
 
-    def updateIsInOrder(self, update: list[int]):
+        for line in self.lines:
+            if len(line) == 0:
+                continue
+
+            if "|" in line:
+                [a, b] = list(map(int, line.split("|")))
+
+                if rules.get(b) is None:
+                    rules[b] = set()
+                rules[b].add(a)
+            else:
+                update = list(map(int, line.split(",")))
+                updates.append(update)
+
+        return ParsedInput(rules, updates)
+
+    def updateIsInOrder(self, update: list[int], rules: dict[int, set[int]]):
         for i in range(len(update) - 1):
             a = update[i]
-            rulesForA = self.rules.get(a, [])
+            rulesForA = rules.get(a, [])
             for j in range(i + 1, len(update)):
                 b = update[j]
                 if b in rulesForA:
@@ -47,10 +42,11 @@ class Solution(BaseSolution):
 
     @answer(143, 6242)
     def part1(self):
+        (rules, updates) = self.parsedInput
         return sum(
             update[int(len(update) / 2)]
-            for update in self.updates
-            if self.updateIsInOrder(update)
+            for update in updates
+            if self.updateIsInOrder(update, rules)
         )
 
         # for update in updates:
@@ -78,16 +74,15 @@ class Solution(BaseSolution):
 
         # return total
 
+        (rules, updates) = self.parsedInput
         return sum(
             update[int(len(update) / 2)]
             for update in [
                 sorted(
                     update,
-                    key=cmp_to_key(
-                        lambda a, b: 1 if b in self.rules.get(a, []) else -1
-                    ),
+                    key=cmp_to_key(lambda a, b: 1 if b in rules.get(a, []) else -1),
                 )
-                for update in self.updates
-                if not self.updateIsInOrder(update)
+                for update in updates
+                if not self.updateIsInOrder(update, rules)
             ]
         )

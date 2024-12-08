@@ -1,20 +1,7 @@
 from ...base import BaseSolution, answer
 
 
-def parseLines(lines: list[str]):
-    ls = []
-
-    for line in lines:
-        [first, second] = line.split(":")
-        res = int(first)
-        vals = [int(v) for v in second.strip().split(" ") if len(v)]
-        ls.append((res, vals))
-
-    return ls
-
-
 def canWork(result: int, current: int, vals: list[int]):
-    print("  ", result, current, vals)
     if current > result:
         return False
 
@@ -28,7 +15,6 @@ def canWork(result: int, current: int, vals: list[int]):
 
 
 def canWork2(result: int, current: int, vals: list[int]):
-    # print("  ", result, current, vals)
     if current > result:
         return False
 
@@ -43,10 +29,21 @@ def canWork2(result: int, current: int, vals: list[int]):
     )
 
 
-class Solution(BaseSolution):
+class Solution(BaseSolution[list[tuple[int, list[int]]]]):
+    def parseInput(self):
+        ls = []
+
+        for line in self.lines:
+            [first, second] = line.split(":")
+            res = int(first)
+            vals = [int(v) for v in second.strip().split(" ") if len(v)]
+            ls.append((res, vals))
+
+        return ls
+
     @answer(3749, 465126289353)
     def part1(self):
-        ls = parseLines(self.lines)
+        ls = self.parsedInput
         total = 0
 
         for res, vals in ls:
@@ -55,17 +52,15 @@ class Solution(BaseSolution):
                 total += res
         return total
 
-    @answer(11387, 0)
+    @answer(11387, 70597497486371)
     def part2(self):
-        ls = parseLines(self.lines)
+        ls = self.parsedInput
         total = 0
 
         for res, vals in ls:
-            print()
-            print("--------")
-            print(res, vals)
+            # print(res, vals)
             r = canWork2(res, vals[0], vals[1:])
-            print("work", r)
+            # print("work", r)
             if r:
                 total += res
         return total

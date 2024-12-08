@@ -40,7 +40,7 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
     directionIndex = 0
     bound = Point(len(g[0]) - 1, len(g) - 1)
 
-    seen: set[Point] = set()
+    seen: set[tuple[Point, int]] = set()
 
     nextP = p
     while nextP.isInBound(bound):
@@ -69,11 +69,12 @@ class Solution(BaseSolution):
         total = 0
         p = getInitialPosition(self.lines)
         path = getOriginalPath(self.lines)
+        g = [list(line) for line in self.lines]
         for cell in path:
-            g = [list(line) for line in self.lines]
             g[cell.y][cell.x] = "#"
             if isLoopingGrid(p, g):
                 # print(cell, "is possible obstacle")
                 total += 1
+            g[cell.y][cell.x] = "."
 
         return total

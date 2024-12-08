@@ -18,6 +18,14 @@
    - (Optional) `[--livemode]` if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`
    - (Optional) `[--bothmode]` if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]`
 
+## Solution's input
+
+By default, when creating a class extending `BaseSolution` the lines from the input file split on new line character will be available as a list in `self.lines`.
+
+If more complex treatment of the input is needed it is possible to implement the method `parseInput()` of the `BaseSolution` class. In this case the class definition should provide a type for the parsed input object (e.g. `class Solution(BaseSolution[list[int]]):`) and the method `parseInput()` should return this object.
+
+The result will then be available via `self.parsedInput` in the solution class.
+
 ## Iterate on a solution
 
 To iterate on the solution after the expected result is known the functions `part1` and `part2` can be decorated with `@answer(a, b)` where `a` and `b` are the expected answers for the test input and the real input respectively.

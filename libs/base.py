@@ -1,7 +1,7 @@
 import functools
 import inspect
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Generic, Literal, Optional, TypeVar
 
 
 class InvalidSolutionError(Exception):
@@ -44,9 +44,13 @@ def read_input_file(path: Path):
         raise
 
 
-class BaseSolution:
+ParsedInput = TypeVar("ParsedInput")
+
+
+class BaseSolution(Generic[ParsedInput]):
     lines: list[str]
     lines_alt: list[str] | None
+    parsedInput: ParsedInput
     livemode: bool
     day: int
     year: int
@@ -68,6 +72,11 @@ class BaseSolution:
                 altInputPath = Path(self.getOwnPath(), "input_test_2")
                 self.lines_alt = read_input_file(altInputPath)
 
+        try:
+            self.parsedInput = self.parseInput()
+        except NotImplementedError:
+            self.parsedInput = None
+
         self.livemode = livemode
         self.day = day
         self.year = year
@@ -79,6 +88,11 @@ class BaseSolution:
             raise Exception("Couldnt get class path")
 
         return Path(module.__file__).parent
+
+    def parseInput(self) -> ParsedInput:
+        """Implement to parse input in self.parsedInput"""
+        """This function must not modify self.parsedInput but return its value"""
+        raise NotImplementedError
 
     @answer(0, 0)
     def part1(self) -> int:
