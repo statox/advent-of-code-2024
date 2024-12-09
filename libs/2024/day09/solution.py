@@ -50,24 +50,23 @@ class Solution(BaseSolution[list[int]]):
     @answer(2858, 6511178035564)
     def part2(self):
         # Transform the parsed input into a list of tuples representing the length of the file and its id
-        # or the length of the empty slot and "."
-        disk: list[tuple[int, str]] = [
-            (length, str(int(i / 2)) if i % 2 == 0 else ".")
+        # or the length of the empty slot and -1
+        disk: list[tuple[int, int]] = [
+            (length, int(i / 2) if i % 2 == 0 else -1)
             for i, length in enumerate(self.parsedInput)
             if length > 0
         ]
 
-        diskLen = len(disk)
-        right = diskLen - 1
+        right = len(disk) - 1
         while right > 0:
             # Search the next file id to move
-            while disk[right][1] == ".":
+            while disk[right][1] == -1:
                 right -= 1
 
             # Search an available slot starting from the begining of the disk
             left = 0
             while left < right and (
-                disk[left][1] != "." or disk[left][0] < disk[right][0]
+                disk[left][1] != -1 or disk[left][0] < disk[right][0]
             ):
                 left += 1
 
@@ -83,18 +82,17 @@ class Solution(BaseSolution[list[int]]):
             disk[left] = disk[right]
             if diff > 0:
                 # If the slot is bigger than the file id, insert a new empty spot after the moved file
-                disk.insert(left + 1, (diff, "."))
-                diskLen += 1
+                disk.insert(left + 1, (diff, -1))
                 right += 1
 
             # Replace the current file with empty slots
-            disk[right] = (disk[right][0], ".")
+            disk[right] = (disk[right][0], -1)
 
         # Moves are all done, compute the result
         total = 0
         i = 0
         for length, val in disk:
-            if val == ".":
+            if val == -1:
                 i += length
                 continue
 
