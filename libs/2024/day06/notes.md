@@ -1,3 +1,32 @@
+Replace set with a 2d list in `isLoopingGrid`
+
+```
+Result for day 6/2024 - part 2 - livemode True: 1753
+         76340268 function calls (76340228 primitive calls) in 20.346 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     5239   10.214    0.002   24.392    0.005 solution.py:38(isLoopingGrid)
+ 18947493    3.951    0.000    6.083    0.000 point.py:9(__add__)
+ 18958656    2.311    0.000    2.311    0.000 point.py:40(isInBound)
+ 18952747    2.133    0.000    2.133    0.000 point.py:5(__init__)
+ 18941590    0.893    0.000    0.893    0.000 {method 'append' of 'list' objects}
+        1    0.699    0.699   25.103   25.103 solution.py:72(part2)
+     5239    0.108    0.000    4.867    0.001 solution.py:43(<listcomp>)
+   509589    0.027    0.000    0.027    0.000 {built-in method builtins.len}
+        1    0.004    0.004    0.011    0.011 solution.py:16(getOriginalPath)
+     5923    0.001    0.000    0.003    0.000 {method 'add' of 'set' objects}
+     5923    0.001    0.000    0.001    0.000 point.py:37(__hash__)
+     5923    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+        2    0.000    0.000    0.000    0.000 solution.py:7(getInitialPosition)
+        1    0.000    0.000   25.103   25.103 base.py:17(wrapper)
+        1    0.000    0.000    0.000    0.000 solution.py:17(<listcomp>)
+      521    0.000    0.000    0.000    0.000 point.py:34(__eq__)
+        1    0.000    0.000    0.000    0.000 solution.py:77(<listcomp>)
+       33    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+```
+
 Avoid calling twice `Point.isInBound` in `isLoopingGrid`
 
 ```

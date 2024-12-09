@@ -40,19 +40,21 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
     directionIndex = 0
     bound = Point(len(g[0]) - 1, len(g) - 1)
 
-    seen: set[tuple[Point, int]] = set()
+    seen = [[[] for _ in line] for line in g]
 
     nextP = p
     nextPInBound = nextP.isInBound(bound)
 
     while nextPInBound:
-        seen.add((p, directionIndex))
+        seen[p.y][p.x].append(directionIndex)
+
         direction = directions[directionIndex]
         nextP = p + direction
-        if (nextP, directionIndex) in seen:
-            return True
 
         nextPInBound = nextP.isInBound(bound)
+        if nextPInBound and directionIndex in seen[nextP.y][nextP.x]:
+            return True
+
         if nextPInBound and g[nextP.y][nextP.x] != "#":
             g[p.y][p.x] = "X"
             p = nextP
