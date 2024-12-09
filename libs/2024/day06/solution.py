@@ -43,14 +43,17 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
     seen: set[tuple[Point, int]] = set()
 
     nextP = p
-    while nextP.isInBound(bound):
+    nextPInBound = nextP.isInBound(bound)
+
+    while nextPInBound:
         seen.add((p, directionIndex))
         direction = directions[directionIndex]
         nextP = p + direction
         if (nextP, directionIndex) in seen:
             return True
 
-        if nextP.isInBound(bound) and g[nextP.y][nextP.x] != "#":
+        nextPInBound = nextP.isInBound(bound)
+        if nextPInBound and g[nextP.y][nextP.x] != "#":
             g[p.y][p.x] = "X"
             p = nextP
         else:
@@ -73,7 +76,6 @@ class Solution(BaseSolution):
         for cell in path:
             g[cell.y][cell.x] = "#"
             if isLoopingGrid(p, g):
-                # print(cell, "is possible obstacle")
                 total += 1
             g[cell.y][cell.x] = "."
 

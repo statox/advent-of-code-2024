@@ -1,3 +1,32 @@
+Avoid calling twice `Point.isInBound` in `isLoopingGrid`
+
+```
+Result for day 6/2024 - part 2 - livemode True: 1753
+         152102584 function calls (152102544 primitive calls) in 36.866 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     5239   13.835    0.003   35.661    0.007 solution.py:38(isLoopingGrid)
+ 37889063    6.136    0.000    8.505    0.000 point.py:37(__hash__)
+ 18947493    4.561    0.000    7.556    0.000 point.py:9(__add__)
+ 18947493    3.050    0.000    7.126    0.000 {method 'add' of 'set' objects}
+ 18952747    2.996    0.000    2.996    0.000 point.py:5(__init__)
+ 18956903    2.681    0.000    2.681    0.000 point.py:40(isInBound)
+ 37889063    2.370    0.000    2.370    0.000 {built-in method builtins.hash}
+        1    1.191    1.191   36.864   36.864 solution.py:70(part2)
+   509589    0.039    0.000    0.039    0.000 {built-in method builtins.len}
+        1    0.004    0.004    0.011    0.011 solution.py:16(getOriginalPath)
+     3513    0.001    0.000    0.001    0.000 point.py:34(__eq__)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.compile}
+        1    0.000    0.000   36.864   36.864 base.py:17(wrapper)
+        2    0.000    0.000    0.000    0.000 solution.py:7(getInitialPosition)
+        1    0.000    0.000    0.000    0.000 {built-in method posix.replace}
+        1    0.000    0.000    0.000    0.000 solution.py:75(<listcomp>)
+        1    0.000    0.000    0.000    0.000 solution.py:17(<listcomp>)
+       35    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+```
+
 Change `Point.__hash__()` from `return hash(f"{self.x};{self.y}")` to `return hash((self.x, self.y))`
 
 ```
