@@ -35,7 +35,7 @@ class Point:
         return self.x == other.x and self.y == other.y
 
     def __hash__(self):
-        return hash(f"{self.x};{self.y}")
+        return hash((self.x, self.y))
 
     def isInBound(self, bound):
         return self.x >= 0 and self.y >= 0 and self.x <= bound.x and self.y <= bound.y
