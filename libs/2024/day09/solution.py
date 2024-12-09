@@ -97,18 +97,18 @@ class Solution(BaseSolution[list[int]]):
                 right += 1
 
             # The operations can create several continuous empty slots, packs them
-            i = 1
-            while i < diskLen:
-                chunk = disk[i]
-                if chunk[1] == "." and disk[i - 1][1] == ".":
-                    # Here we are tempted of not removing the empty slot of length 0 to avoid mutating the list
-                    # But that makes much more slots to iterate over and so would be slower
-                    disk[i] = (disk[i - 1][0] + disk[i][0], ".")
-                    disk.pop(i - 1)
-                    diskLen -= 1
-                    right -= 1
-                else:
-                    i += 1
+            # Here we are tempted of not removing the empty slot of length 0 to avoid mutating the list
+            # But that makes much more slots to iterate over and so would be slower
+            while right < diskLen - 2 and disk[right + 1][1] == ".":
+                disk[right] = (disk[right + 1][0] + disk[right][0], ".")
+                disk.pop(right + 1)
+                diskLen -= 1
+
+            while right > 0 and disk[right - 1][1] == ".":
+                disk[right - 1] = (disk[right - 1][0] + disk[right][0], ".")
+                disk.pop(right)
+                right -= 1
+                diskLen -= 1
 
         # Moves are all done, compute the result
         total = 0
