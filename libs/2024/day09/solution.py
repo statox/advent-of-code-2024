@@ -51,15 +51,11 @@ class Solution(BaseSolution[list[int]]):
     def part2(self):
         # Transform the parsed input into a list of tuples representing the length of the file and its id
         # or the length of the empty slot and "."
-        disk: list[tuple[int, str]] = []
-        for i, length in enumerate(self.parsedInput):
-            if length == 0:
-                continue
-
-            if i % 2 == 0:
-                disk.append((length, str(int(i / 2))))
-            else:
-                disk.append((length, "."))
+        disk: list[tuple[int, str]] = [
+            (length, str(int(i / 2)) if i % 2 == 0 else ".")
+            for i, length in enumerate(self.parsedInput)
+            if length > 0
+        ]
 
         diskLen = len(disk)
         right = diskLen - 1
@@ -83,32 +79,16 @@ class Solution(BaseSolution[list[int]]):
             # Remaining space in the slot after we'll have moved the file
             diff = disk[left][0] - disk[right][0]
 
-            # Replace the current file by empty slots
-            vright = disk[right][1]
-            lright = disk[right][0]
-            disk[right] = (disk[right][0], ".")
-
             # Move the file id to the empty slot
-            disk[left] = (lright, vright)
+            disk[left] = disk[right]
             if diff > 0:
                 # If the slot is bigger than the file id, insert a new empty spot after the moved file
                 disk.insert(left + 1, (diff, "."))
                 diskLen += 1
                 right += 1
 
-            # The operations can create several continuous empty slots, packs them
-            # Here we are tempted of not removing the empty slot of length 0 to avoid mutating the list
-            # But that makes much more slots to iterate over and so would be slower
-            while right < diskLen - 2 and disk[right + 1][1] == ".":
-                disk[right] = (disk[right + 1][0] + disk[right][0], ".")
-                disk.pop(right + 1)
-                diskLen -= 1
-
-            while right > 0 and disk[right - 1][1] == ".":
-                disk[right - 1] = (disk[right - 1][0] + disk[right][0], ".")
-                disk.pop(right)
-                right -= 1
-                diskLen -= 1
+            # Replace the current file with empty slots
+            disk[right] = (disk[right][0], ".")
 
         # Moves are all done, compute the result
         total = 0
