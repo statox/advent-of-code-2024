@@ -30,7 +30,7 @@ def getOriginalPath(lines: list[str]):
             g[p.y][p.x] = "X"
             p = nextP
         else:
-            directionIndex = (directionIndex + 1) % len(directions)
+            directionIndex = (directionIndex + 1) % 4
 
     return seen
 
@@ -40,13 +40,13 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
     directionIndex = 0
     bound = (len(g[0]) - 1, len(g) - 1)
 
-    seen = [[[] for _ in line] for line in g]
+    seen = [[[False, False, False, False] for _ in line] for line in g]
 
     nextP = (p[0], p[1])
     nextPInBound = True
 
     while nextPInBound:
-        seen[p[1]][p[0]].append(directionIndex)
+        seen[p[1]][p[0]][directionIndex] = True
 
         direction = directions[directionIndex]
         nextP = (p[0] + direction.x, p[1] + direction.y)
@@ -57,14 +57,14 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
             and nextP[0] >= 0
             and nextP[1] >= 0
         )
-        if nextPInBound and directionIndex in seen[nextP[1]][nextP[0]]:
+        if nextPInBound and seen[nextP[1]][nextP[0]][directionIndex]:
             return True
 
         if nextPInBound and g[nextP[1]][nextP[0]] != "#":
             g[p[1]][p[0]] = "X"
             p = nextP
         else:
-            directionIndex = (directionIndex + 1) % len(directions)
+            directionIndex = (directionIndex + 1) % 4
 
     return False
 
