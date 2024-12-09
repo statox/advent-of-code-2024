@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import cProfile
 import sys
 from argparse import ArgumentParser
 from datetime import datetime
@@ -34,6 +35,12 @@ parser.add_argument(
     type=int,
     choices=[1, 2],
     help="The question to run",
+)
+parser.add_argument(
+    "--profile",
+    dest="profile",
+    action="store_true",
+    help="Profile the code to run",
 )
 
 # Make -l and -b mutually exclusive
@@ -76,7 +83,22 @@ def runMode(year: str, day: int, livemode: bool, part: Optional[int]):
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    if args.bothmode:
+    if args.profile:
+        if args.part is None:
+            print("Can't profile several parts at once. --profile must come with -p")
+            sys.exit(1)
+        if args.bothmode:
+            print(
+                "Can't profile several inputs at once. --profile must not come with -b"
+            )
+            sys.exit(1)
+
+        cProfile.run(
+            "runMode(args.year, args.day, args.livemode, args.part)",
+            # sort="tottime",
+            sort="ncalls",
+        )
+    elif args.bothmode:
         runMode(args.year, args.day, False, args.part)
         runMode(args.year, args.day, True, args.part)
     else:
