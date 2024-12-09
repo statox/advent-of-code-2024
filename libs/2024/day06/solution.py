@@ -51,7 +51,9 @@ def isLoopingGrid(initialPosition: Point, g: list[list[str]]):
         direction = directions[directionIndex]
         nextP = p + direction
 
-        nextPInBound = nextP.isInBound(bound)
+        nextPInBound = (
+            nextP.x <= bound.x and nextP.y <= bound.y and nextP.x >= 0 and nextP.y >= 0
+        )
         if nextPInBound and directionIndex in seen[nextP.y][nextP.x]:
             return True
 
