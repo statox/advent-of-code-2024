@@ -1,3 +1,32 @@
+Replace `Point` class with raw tuple in `isLoopingGrid`
+
+```
+Result for day 6/2024 - part 2 - livemode True: 1753
+         19505116 function calls (19505076 primitive calls) in 9.665 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     5239    8.113    0.002   13.654    0.003 solution.py:38(isLoopingGrid)
+ 18941590    0.729    0.000    0.729    0.000 {method 'append' of 'list' objects}
+        1    0.691    0.691   14.356   14.356 solution.py:77(part2)
+     5239    0.100    0.000    4.794    0.001 solution.py:43(<listcomp>)
+   509589    0.019    0.000    0.019    0.000 {built-in method builtins.len}
+        1    0.004    0.004    0.011    0.011 solution.py:16(getOriginalPath)
+    11847    0.001    0.000    0.001    0.000 point.py:40(isInBound)
+     5923    0.001    0.000    0.002    0.000 point.py:9(__add__)
+     5923    0.001    0.000    0.003    0.000 {method 'add' of 'set' objects}
+     5938    0.001    0.000    0.001    0.000 point.py:5(__init__)
+     5923    0.001    0.000    0.001    0.000 point.py:37(__hash__)
+        1    0.001    0.001    0.001    0.001 {built-in method builtins.compile}
+     5923    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+        2    0.000    0.000    0.000    0.000 solution.py:7(getInitialPosition)
+        1    0.000    0.000   14.357   14.357 base.py:17(wrapper)
+      521    0.000    0.000    0.000    0.000 point.py:34(__eq__)
+        1    0.000    0.000    0.000    0.000 solution.py:82(<listcomp>)
+        1    0.000    0.000    0.000    0.000 solution.py:17(<listcomp>)
+```
+
 Stop using `Point.isInBound()` and use condition directly in `isLoopingGrid`
 
 ```
@@ -138,4 +167,13 @@ Result for day 6/2024 - part 2 - livemode True: 1753
         1    0.000    0.000    0.000    0.000 solution.py:72(<listcomp>)
        35    0.000    0.000    0.000    0.000 {built-in method posix.stat}
 ```
+
+```
+
+```
+
+```
+
+```
+
 ```
