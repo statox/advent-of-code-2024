@@ -2,7 +2,9 @@
 
 ## Add a solution for a new day
 
-1. Run the script `./newDay [day]` with `[day]` the day to implement (`1 <= day <= 25`)
+1. Run the script `./newDay [day] [year]` with `[day]` the day to implement (`1 <= day <= 25`)
+   - `[day]` is optional in December and will be replaced by the current day (_only in december_)
+   - `[year]` is optional and will default to the current year
 1. Edit `libs/dayXX/input` and `libs/dayXX/input_test` with the input
 1. Edit `libs/dayXX/solution.py` with the code implementing the methods `part1` and `part2`
 1. Run the code for the day with

@@ -1,83 +1,85 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-# Function to check if a string is an integer
-is_integer() {
-    [[ "$1" =~ ^[0-9]+$ ]]
-}
+import os
+import shutil
+import sys
+from argparse import ArgumentParser
+from datetime import datetime
+from pathlib import Path
 
-# Function to validate day input
-validate_day() {
-    local day=$1
-    if [ -z "$day" ]; then
-        echo "Error: Day argument is required"
-        exit 1
-    fi
+parser = ArgumentParser()
+parser.add_argument(
+    "-d",
+    "--day",
+    dest="day",
+    required=False,
+    type=int,
+    choices=list(range(1, 26)),
+    help="The day to create (if omitted and current month is december, default to today)",
+)
+parser.add_argument(
+    "-y",
+    "--year",
+    dest="year",
+    required=False,
+    type=str,
+    help="The year of the day to create (default to current year)",
+    default=datetime.now().year,
+)
 
-    if ! is_integer "$day"; then
-        echo "Error: Day must be an integer"
-        exit 1
-    fi
 
-    if (( day < 1 || day > 25 )); then
-        echo "Error: Day must be between 1 and 25"
-        exit 1
-    fi
-}
+def confirm(prompt):
+    user_input = input(prompt + " (yes/no): ").lower()
+    return user_input in ["yes", "y"]
 
-validate_year() {
-    local year=$1
-    if [ -z "$year" ]; then
-        # That should not happen since we setup a default value to the current year
-        echo "Error: Year argument is required and the default value is not defined"
-        exit 1
-    fi
 
-    if ! is_integer "$year"; then
-        echo "Error: Year must be an integer"
-        exit 1
-    fi
-}
+def validate_args():
+    args = parser.parse_args()
 
-# Get the script directory
-SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+    current_month = datetime.now().month
+    if current_month != 12 and args.day is None:
+        print("The day parameter can be omitted only in december")
+        sys.exit(1)
 
-# Validate day argument
-if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: <day> [<year>]"
-    exit 1
-fi
-day="$1"
-validate_day "$day"
-year="${2:-$(date +%Y)}"
-validate_year "$year"
+    day = args.day or datetime.now().day
+    year = args.year
 
-# Create paths
-YEAR_PATH="$SCRIPT_DIR/libs/$year"
-CODE_PATH="$YEAR_PATH/day$(printf '%02d' "$day")"
+    return (day, year)
 
-# Check if paths already exist
-if [ -d "$CODE_PATH" ]; then
-    echo "Error: Code directory already exists"
-    exit 1
-fi
 
-# Create directories
-mkdir -p "$CODE_PATH"
+if __name__ == "__main__":
+    # Validate arguments
+    (day, year) = validate_args()
 
-# Create templatesPath
-TEMPLATES_PATH="$SCRIPT_DIR/data/templates"
+    # Create paths
+    script_directory = Path(__file__).parent.absolute()
+    template_directory = Path(script_directory, "data/templates")
+    code_directory = Path(script_directory, "libs", str(year), str(f"{day:02}"))
 
-# Find all .tmpl files
-files=$(find "$TEMPLATES_PATH" -type f -name "*.tmpl")
+    # Make the user validate what we are going to do
+    print(f"About to create the following directory for day {day:02}/{year}:")
+    print(code_directory)
+    if not confirm("Confirm?"):
+        print("Aborting")
+        sys.exit(0)
 
-# Copy .tmpl files to codePath
-for file in $files; do
-    # Extract filename without directory
-    FILE_NAME=$(basename "$file" '.tmpl')
+    # Check if paths already exists
+    if code_directory.exists():
+        print("The directory already exists. Stopping here")
+        sys.exit(0)
 
-    # Copy the file to the new location
-    cp "$file" "$CODE_PATH/$FILE_NAME"
-done
+    # Create directory
+    code_directory.mkdir(parents=True)
 
-echo "Files created successfully in:"
-echo "$CODE_PATH"
+    # Copy template files
+    for filename in os.listdir(template_directory):
+        if not filename.endswith(".tmpl"):
+            continue
+
+        src_path = Path(template_directory, filename)
+        dest_filename = filename[:-5]  # Remove '.tmpl'
+        dest_path = Path(code_directory, dest_filename)
+
+        shutil.copy(src_path, dest_path)
+
+    print("Files created successfully")
