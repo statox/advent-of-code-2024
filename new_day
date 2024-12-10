@@ -54,7 +54,7 @@ if __name__ == "__main__":
     # Create paths
     script_directory = Path(__file__).parent.absolute()
     template_directory = Path(script_directory, "data/templates")
-    code_directory = Path(script_directory, "libs", str(year), str(f"{day:02}"))
+    code_directory = Path(script_directory, "libs", str(year), str(f"day{day:02}"))
 
     # Make the user validate what we are going to do
     print(f"About to create the following directory for day {day:02}/{year}:")
