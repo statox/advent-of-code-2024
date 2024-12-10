@@ -1,3 +1,4 @@
+import math
 from typing import Dict, NamedTuple
 
 
@@ -14,11 +15,6 @@ Memory = Dict[int, int]
 class AOCMap(NamedTuple):
     memory: Memory
     map: AOCMapEntries
-
-
-def pairwise(iterable):
-    a = iter(iterable)
-    return zip(a, a)
 
 
 def parseInput(lines: list[str]):
@@ -83,3 +79,34 @@ def mapAValue(v: int, m: AOCMap):
             return res
 
     return v
+
+
+def _part1(lines: list[str]):
+    (
+        seeds,
+        seed2soil,
+        soil2fertilizer,
+        fertilizer2water,
+        water2light,
+        light2temperature,
+        temperature2humidity,
+        humidity2location,
+    ) = parseInput(lines)
+
+    minLocation = math.inf
+    for seed in seeds:
+        soil = mapAValue(seed, seed2soil)
+        fertilizer = mapAValue(soil, soil2fertilizer)
+        water = mapAValue(fertilizer, fertilizer2water)
+        light = mapAValue(water, water2light)
+        temp = mapAValue(light, light2temperature)
+        humidity = mapAValue(temp, temperature2humidity)
+        location = mapAValue(humidity, humidity2location)
+
+        minLocation = min(minLocation, location)
+
+        # print(
+        #     f"Seed {seed}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temp}, humidity {humidity}, location {location}"
+        # )
+
+    return int(minLocation)
