@@ -1,5 +1,7 @@
 from ...base import BaseSolution, answer
-from ...utils.point import Point, directions
+from ...utils.point import NE, NW, SE, SW, E, N, Point, S, W
+
+directions = [N, S, E, W, NE, NW, SE, SW]
 
 
 class Solution(BaseSolution):

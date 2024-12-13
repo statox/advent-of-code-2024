@@ -44,6 +44,17 @@ class Point:
         return isinstance(self.x, int) and isinstance(self.y, int)
 
 
+E = Point(1, 0)
+S = Point(0, 1)
+W = Point(-1, 0)
+N = Point(0, -1)
+
+NE = Point(1, -1)
+NW = Point(-1, -1)
+SE = Point(1, 1)
+SW = Point(-1, 1)
+
+
 directions = [
     Point(-1, -1),
     Point(0, -1),
