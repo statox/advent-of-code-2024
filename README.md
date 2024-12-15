@@ -2,26 +2,28 @@
 
 ## Add a solution for a new day
 
-1. Run the script `./newDay [day] [year]` with `[day]` the day to implement (`1 <= day <= 25`)
+1. Run the script `./newDay [-d day] [-y year]` with `[day]` the day to implement (`1 <= day <= 25`)
    - `[day]` is optional in December and will be replaced by the current day (_only in december_)
    - `[year]` is optional and will default to the current year
 1. Edit `libs/dayXX/input` and `libs/dayXX/input_test` with the input
+   1. If needed also add `libs/dayXX/input_test_1`, `libs/dayXX/input_test_2`, etc with alternative inputs (See `-i` option)
 1. Edit `libs/dayXX/solution.py` with the code implementing the methods `part1` and `part2`
-1. Run the code for the day with
+1. Run the code for the day with the `main.py` script
 
-   ```bash
-   ./main.py -d [day] -p [part] [-i input file] [-l or --livemode] [-b or --bothmode]
-   ```
+```bash
+./main.py -d [day] -p [part] [-y year] [-i input file] [-l or --livemode] [-b or --bothmode]
+```
 
-   where
+Usage:
 
-| Parameter      | Optional | Value    | Comment                                                                                                                                        |
-| -------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[day]`        | No       | `{1,24}` | The current day without the leading `0`                                                                                                        |
-| `[part]`       | Yes      | `1,2`    | If omitted both parts are run.                                                                                                                 |
-| `[input file]` | Yes      | `[1-9]`  | A number corresponding to the filename of an alternative input file like `input_test_1`                                                        |
-| `[--livemode]` | Yes      |          | if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`                                       |
-| `[--bothmode]` | Yes      |          | if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]` |
+| Parameter         | Optional | Value    | Comment                                                                                                                                        |
+| ----------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-d [day]`        | No       | `{1,24}` | The day to run without the leading `0` e.g. `-d4`                                                                                              |
+| `-y [year]`       | Yes      | `[1-9]`  | The year of the day to run e.g `-y2023`                                                                                                        |
+| `-p [part]`       | Yes      | `1,2`    | If omitted both parts are run.                                                                                                                 |
+| `-i [input file]` | Yes      | `[1-9]`  | A number corresponding to the filename of an alternative input file e.g `-i1` to parse `input_test_1`                                          |
+| `[--livemode]`    | Yes      |          | if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`and `-i`                               |
+| `[--bothmode]`    | Yes      |          | if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]` |
 
 ## Solution's input
 
@@ -39,7 +41,7 @@ When the decorator is present an exception will be thrown if the returned value 
 
 ## Run the tests
 
-I created the tests to make sure my `BaseSolution` class and `main.py` were correct, they might not be useful in the future. They can be run with:
+I created the tests to make sure my `BaseSolution` class and `main.py` were correct. They can be run with:
 
 ```shell
 python -m unittest **/*_test.py
