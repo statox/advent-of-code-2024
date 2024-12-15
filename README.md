@@ -10,15 +10,18 @@
 1. Run the code for the day with
 
    ```bash
-   ./main.py -d [day] -p [part] [-l or --livemode] [-b or --bothmode]
+   ./main.py -d [day] -p [part] [-i input file] [-l or --livemode] [-b or --bothmode]
    ```
 
    where
 
-   - `[day]` is the current day without the leading `0`
-   - (Optional) `[part]` is `1` or `2`. If omitted both parts are run.
-   - (Optional) `[--livemode]` if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`
-   - (Optional) `[--bothmode]` if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]`
+| Parameter      | Optional | Value    | Comment                                                                                                                                        |
+| -------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[day]`        | No       | `{1,24}` | The current day without the leading `0`                                                                                                        |
+| `[part]`       | Yes      | `1,2`    | If omitted both parts are run.                                                                                                                 |
+| `[input file]` | Yes      | `[1-9]`  | A number corresponding to the filename of an alternative input file like `input_test_1`                                                        |
+| `[--livemode]` | Yes      |          | if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`                                       |
+| `[--bothmode]` | Yes      |          | if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]` |
 
 ## Solution's input
 

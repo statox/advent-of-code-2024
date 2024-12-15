@@ -37,6 +37,13 @@ parser.add_argument(
     help="The question to run",
 )
 parser.add_argument(
+    "-i",
+    "--inputFile",
+    dest="inputFile",
+    type=int,
+    help="The alternative input file to use",
+)
+parser.add_argument(
     "--profile",
     dest="profile",
     action="store_true",
@@ -61,7 +68,7 @@ modesGroup.add_argument(
 )
 
 
-def getSolution(year: str, day: int, livemode: bool):
+def getSolution(year: str, day: int, livemode: bool, inputFile: int | None):
     try:
         path = f"libs.{year}.day{day:02}.solution"
         solution_class = cast(Type[BaseSolution], import_module(path).Solution)
@@ -69,11 +76,15 @@ def getSolution(year: str, day: int, livemode: bool):
         print(f"ERROR: Day {args.day}/{year} is not implemented")
         sys.exit(1)
 
-    return solution_class(SolutionOptions(livemode, day, int(year)))
+    return solution_class(
+        SolutionOptions(livemode, day, int(year), alternativeInputFile=inputFile)
+    )
 
 
-def runMode(year: str, day: int, livemode: bool, part: Optional[int]):
-    solution = getSolution(year, day, livemode)
+def runMode(
+    year: str, day: int, livemode: bool, part: Optional[int], inputFile: Optional[int]
+):
+    solution = getSolution(year, day, livemode, inputFile)
     if part is None:
         solution.runPart("both")
     else:
@@ -99,7 +110,7 @@ if __name__ == "__main__":
             sort="ncalls",
         )
     elif args.bothmode:
-        runMode(args.year, args.day, False, args.part)
-        runMode(args.year, args.day, True, args.part)
+        runMode(args.year, args.day, False, args.part, args.inputFile)
+        runMode(args.year, args.day, True, args.part, args.inputFile)
     else:
-        runMode(args.year, args.day, args.livemode, args.part)
+        runMode(args.year, args.day, args.livemode, args.part, args.inputFile)
