@@ -7,7 +7,7 @@ from datetime import datetime
 from importlib import import_module
 from typing import Optional, Type, cast
 
-from libs.base import BaseSolution
+from libs.base import BaseSolution, SolutionOptions
 
 parser = ArgumentParser()
 parser.add_argument(
@@ -69,7 +69,7 @@ def getSolution(year: str, day: int, livemode: bool):
         print(f"ERROR: Day {args.day}/{year} is not implemented")
         sys.exit(1)
 
-    return solution_class(livemode, day, int(year))
+    return solution_class(SolutionOptions(livemode, day, int(year)))
 
 
 def runMode(year: str, day: int, livemode: bool, part: Optional[int]):

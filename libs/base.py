@@ -1,4 +1,5 @@
 import functools
+from dataclasses import dataclass
 import inspect
 from pathlib import Path
 from typing import Generic, Literal, Optional, TypeVar
@@ -47,6 +48,14 @@ def read_input_file(path: Path):
 ParsedInput = TypeVar("ParsedInput")
 
 
+@dataclass
+class SolutionOptions:
+    livemode: bool
+    day: int
+    year: int
+    lines: list[str] | None = None
+
+
 class BaseSolution(Generic[ParsedInput]):
     lines: list[str]
     lines_alt: list[str] | None
@@ -55,17 +64,15 @@ class BaseSolution(Generic[ParsedInput]):
     day: int
     year: int
 
-    def __init__(
-        self, livemode: bool, day: int, year: int, lines: Optional[list[str]] = None
-    ):
-        self.livemode = livemode
-        self.day = day
-        self.year = year
+    def __init__(self, options: SolutionOptions):
+        self.livemode = options.livemode
+        self.day = options.day
+        self.year = options.year
 
         self.lines_alt = None
-        if lines is not None:
-            self.lines = lines
-        elif livemode:
+        if options.lines is not None:
+            self.lines = options.lines
+        elif self.livemode:
             inputPath = Path(self.getOwnPath(), "input")
             self.lines = read_input_file(inputPath)
         else:
