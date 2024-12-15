@@ -58,6 +58,10 @@ class BaseSolution(Generic[ParsedInput]):
     def __init__(
         self, livemode: bool, day: int, year: int, lines: Optional[list[str]] = None
     ):
+        self.livemode = livemode
+        self.day = day
+        self.year = year
+
         self.lines_alt = None
         if lines is not None:
             self.lines = lines
@@ -76,10 +80,6 @@ class BaseSolution(Generic[ParsedInput]):
             self.parsedInput = self.parseInput()
         except NotImplementedError:
             self.parsedInput = None
-
-        self.livemode = livemode
-        self.day = day
-        self.year = year
 
     @classmethod
     def getOwnPath(cls):
