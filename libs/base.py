@@ -1,8 +1,8 @@
 import functools
-from dataclasses import dataclass
 import inspect
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Generic, Literal, Optional, TypeVar
+from typing import Generic, Literal, TypeVar
 
 
 class InvalidSolutionError(Exception):
@@ -11,6 +11,11 @@ class InvalidSolutionError(Exception):
         self.actual = actual
         message = f"Invalid solution: Expected {expected}, but got {actual}"
         super().__init__(message)
+
+
+class InvalidSolutionOptions(Exception):
+    def __init__(self, message):
+        super().__init__(f"Invalid solution options: {message}")
 
 
 def answer(expectedAnswerTest: int, expectedAnswerLivemode: int):
@@ -51,9 +56,10 @@ ParsedInput = TypeVar("ParsedInput")
 @dataclass
 class SolutionOptions:
     livemode: bool
-    day: int
-    year: int
+    day: int = 1
+    year: int = 2024
     lines: list[str] | None = None
+    alternativeInputFile: int | None = None
 
 
 class BaseSolution(Generic[ParsedInput]):
@@ -70,18 +76,44 @@ class BaseSolution(Generic[ParsedInput]):
         self.year = options.year
 
         self.lines_alt = None
-        if options.lines is not None:
-            self.lines = options.lines
-        elif self.livemode:
+
+        if options.lines is not None and options.livemode:
+            raise InvalidSolutionOptions(
+                "Can't specify both lines when livemode is true"
+            )
+
+        if options.alternativeInputFile is not None and options.livemode:
+            raise InvalidSolutionOptions(
+                "Can't specify alternative input when livemode is true"
+            )
+
+        if options.lines is not None and options.alternativeInputFile is not None:
+            raise InvalidSolutionOptions(
+                "Can't specify both lines and alternativeInputFile"
+            )
+
+        if self.livemode:
+            # In livemode always read the main input file
             inputPath = Path(self.getOwnPath(), "input")
             self.lines = read_input_file(inputPath)
-        else:
+        elif options.lines is not None:
+            # If some lines are directly specified use that as the input
+            self.lines = options.lines
+        elif options.alternativeInputFile is None:
+            # If not in livemode and no alternativeInputFile is specified use the input_test file
             inputPath = Path(self.getOwnPath(), "input_test")
             self.lines = read_input_file(inputPath)
+        else:
+            # If not in livemode and alternativeInputFile is specified try to use the corresponding file
+            alternativeInputFile = Path(
+                self.getOwnPath(), f"input_test_{options.alternativeInputFile}"
+            )
+            if not alternativeInputFile.exists():
+                raise InvalidSolutionOptions(
+                    f"Specified alternative file not found: {alternativeInputFile}"
+                )
 
-            if Path(self.getOwnPath(), "input_test_2").exists():
-                altInputPath = Path(self.getOwnPath(), "input_test_2")
-                self.lines_alt = read_input_file(altInputPath)
+            self.lines = read_input_file(alternativeInputFile)
 
         try:
             self.parsedInput = self.parseInput()
