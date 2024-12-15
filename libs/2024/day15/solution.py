@@ -10,7 +10,7 @@ class Input(NamedTuple):
     pos: Point
 
 
-def parsePart1(lines: list[str]) -> Input:
+def parseLines(lines: list[str], extendedGrid: bool) -> Input:
     g: list[list[str]] = []
     moves: list[Point] = []
     pos: Point | None = None
@@ -22,72 +22,26 @@ def parsePart1(lines: list[str]) -> Input:
         ">": Point(1, 0),
     }
 
-    doGrid = True
-    y = -1
-    for line in lines:
-        if len(line) == 0:
-            doGrid = False
-            continue
-
-        if doGrid:
-            y += 1
-            g.append(list(line))
-            if line.find("@") > -1:
-                pos = Point(line.index("@"), y)
-            continue
-
-        for moveStr in list(line):
-            move = movesMap.get(moveStr)
-            if move is None:
-                raise Exception("Unexpected move: " + moveStr)
-
-            moves.append(move)
-    if pos is None:
-        raise Exception("Initial position not found")
-
-    return Input(g, moves, pos)
-
-
-def parsePart2(lines: list[str]) -> Input:
-    g: list[list[str]] = []
-    moves: list[Point] = []
-    pos: Point | None = None
-
-    movesMap = {
-        "^": Point(0, -1),
-        "v": Point(0, 1),
-        "<": Point(-1, 0),
-        ">": Point(1, 0),
-    }
-
-    doGrid = True
-    y = -1
-    for line in lines:
-        if len(line) == 0:
-            doGrid = False
-            continue
-
-        if doGrid:
-            y += 1
-            finalLine = line
+    separatorIndex = lines.index("")
+    for y, line in enumerate(lines[:separatorIndex]):
+        finalLine = line
+        if extendedGrid:
             finalLine = finalLine.replace("#", "##")
             finalLine = finalLine.replace("O", "[]")
             finalLine = finalLine.replace(".", "..")
             finalLine = finalLine.replace("@", "@.")
+        g.append(list(finalLine))
+        if finalLine.find("@") > -1:
+            pos = Point(finalLine.index("@"), y)
 
-            g.append(list(finalLine))
-            if finalLine.find("@") > -1:
-                pos = Point(finalLine.index("@"), y)
-            continue
-
-        for moveStr in list(line):
-            move = movesMap.get(moveStr)
-            if move is None:
-                raise Exception("Unexpected move: " + moveStr)
-
-            moves.append(move)
     if pos is None:
         raise Exception("Initial position not found")
+
+    for moveStr in list("".join(lines[separatorIndex + 1 :])):
+        move = movesMap.get(moveStr)
+        if move is None:
+            raise Exception("Unexpected move: " + moveStr)
+        moves.append(move)
 
     return Input(g, moves, pos)
 
@@ -105,16 +59,13 @@ def getScore(g: list[list[str]]):
 
 def makeMove(g: list[list[str]], move: Point, pos: Point):
     neighbor = pos + move
-    if g[neighbor.y][neighbor.x] == ".":
-        # Direct neighbor is free
-        return pos + move
 
     if g[neighbor.y][neighbor.x] == "#":
         # Direct neighbor is a wall
         return pos
 
     if move.x != 0:
-        # Horizontal move
+        # Horizontal boxes move
         n = pos
         while n == pos or g[n.y][n.x] in "[]":
             n += move
@@ -128,15 +79,16 @@ def makeMove(g: list[list[str]], move: Point, pos: Point):
         return pos + move
 
     if move.y != 0:
-        # Vertical move
+        # Vertical boxes move
         s = []
-        toMove = []
+
         dest = pos + move
         if g[dest.y][dest.x] == "[":
             s.append((dest, dest + Point(1, 0)))
         elif g[dest.y][dest.x] == "]":
             s.append((dest + Point(-1, 0), dest))
 
+        toMove = []
         while s:
             (left, right) = s.pop(0)
             if (left, right) not in toMove:
@@ -181,7 +133,7 @@ def makeMove(g: list[list[str]], move: Point, pos: Point):
 class Solution(BaseSolution[Input]):
     @answer(10092, 1414416)
     def part1(self):
-        (g, moves, pos) = parsePart1(self.lines)
+        (g, moves, pos) = parseLines(self.lines, False)
 
         for move in moves:
             n = pos
@@ -204,7 +156,7 @@ class Solution(BaseSolution[Input]):
 
     @answer(9021, 1386070)
     def part2(self):
-        (g, moves, pos) = parsePart2(self.lines)
+        (g, moves, pos) = parseLines(self.lines, True)
 
         for move in moves:
             newPos = makeMove(g, move, pos)
