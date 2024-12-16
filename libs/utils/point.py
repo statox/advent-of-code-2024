@@ -43,6 +43,18 @@ class Point:
     def isInteger(self):
         return isinstance(self.x, int) and isinstance(self.y, int)
 
+    def distance_squared(self, other: "Point") -> float:
+        """
+        Calculate the squared distance between this point and another point.
+
+        Args:
+            other (Point): Another Point object.
+
+        Returns:
+            float: The squared distance between the two points.
+        """
+        return (self.x - other.x) ** 2 + (self.y - other.y) ** 2
+
 
 E = Point(1, 0)
 S = Point(0, 1)
