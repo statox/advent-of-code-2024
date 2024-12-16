@@ -108,8 +108,9 @@ def doWorkWithComplexWrapper(parsedInput: Input):
             bestTiles = bestTiles.union(path)
             continue
 
-        # Using the default value can not happen but I want to avoid checking that we do get a value
-        for newDirection, scoreInc in neighborsDirectionsCC.get(direction, []):
+        neighborsDirs = neighborsDirectionsCC.get(direction)
+        assert neighborsDirs is not None
+        for newDirection, scoreInc in neighborsDirs:
             n = pos + newDirection
             if g[int(n.y)][int(n.x)] in ".E":
                 s.append((n, newDirection, score + scoreInc, path + [n]))
@@ -164,8 +165,9 @@ def doWorkWithComplex(parsedInput: Input):
             bestTiles = bestTiles.union(path)
             continue
 
-        # Using the default value can not happen but I want to avoid checking that we do get a value
-        for newDirection, scoreInc in neighborsDirectionsC.get(direction, []):
+        neighborsDirs = neighborsDirectionsC.get(direction)
+        assert neighborsDirs is not None
+        for newDirection, scoreInc in neighborsDirs:
             n = pos + newDirection
             if g[int(n.imag)][int(n.real)] in ".E":
                 s.append((n, newDirection, score + scoreInc, path + [n]))
@@ -212,8 +214,9 @@ def doWork(parsedInput: Input):
             bestTiles = bestTiles.union(path)
             continue
 
-        # Using the default value can not happen but I want to avoid checking that we do get a value
-        for newDirection, scoreInc in neighborsDirections.get(direction, []):
+        neighborsDirs = neighborsDirections.get(direction)
+        assert neighborsDirs is not None
+        for newDirection, scoreInc in neighborsDirs:
             n = pos + newDirection
             if g[n.y][n.x] in ".E":
                 s.append((n, newDirection, score + scoreInc, path + [n]))
