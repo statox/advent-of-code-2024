@@ -1,4 +1,5 @@
 import math
+from collections import deque
 from typing import NamedTuple
 
 from ...base import BaseSolution, answer
@@ -80,13 +81,13 @@ def doWorkWithComplexWrapper(parsedInput: Input):
     startC = CPoint(start.x, start.y)
     endC = CPoint(end.x, end.y)
 
-    s = [(startC, CCE, 0, [startC])]
-    seen: dict[tuple[complex, complex], int] = {}
+    s = deque([(startC, CCE, 0, [startC])])
+    seen: dict[tuple[CPoint, CPoint], int] = {}
 
-    bestTiles: set[complex] = set()
+    bestTiles: set[CPoint] = set()
     bestScore = math.inf
     while s:
-        (pos, direction, score, path) = s.pop(0)
+        (pos, direction, score, path) = s.popleft()
         # print(f"{pos} {direction} {score} {len(path)}")
 
         if score > bestScore:
@@ -136,13 +137,13 @@ def doWorkWithComplex(parsedInput: Input):
     startC = start.x + start.y * 1j
     endC = end.x + end.y * 1j
 
-    s = [(startC, CE, 0, [startC])]
+    s = deque([(startC, CE, 0, [startC])])
     seen: dict[tuple[complex, complex], int] = {}
 
     bestTiles: set[complex] = set()
     bestScore = math.inf
     while s:
-        (pos, direction, score, path) = s.pop(0)
+        (pos, direction, score, path) = s.popleft()
         # print(f"{pos} {direction} {score} {len(path)}")
 
         if score > bestScore:
@@ -184,13 +185,13 @@ neighborsDirections = {
 def doWork(parsedInput: Input):
     (g, start, end) = parsedInput
 
-    s = [(start, E, 0, [start])]
+    s = deque([(start, E, 0, [start])])
     seen: dict[tuple[Point, Point], int] = {}
 
     bestTiles: set[Point] = set()
     bestScore = math.inf
     while s:
-        (pos, direction, score, path) = s.pop(0)
+        (pos, direction, score, path) = s.popleft()
         # print(f"{pos} {direction} {score} {len(path)}")
 
         if score > bestScore:
@@ -236,6 +237,6 @@ class Solution(BaseSolution[Input]):
     @answer(45, 609)
     def part2(self):
         # res = doWork(self.parsedInput)
-        # res = doWorkWithComplex(self.parsedInput)
-        res = doWorkWithComplexWrapper(self.parsedInput)
+        res = doWorkWithComplex(self.parsedInput)
+        # res = doWorkWithComplexWrapper(self.parsedInput)
         return res[1]
