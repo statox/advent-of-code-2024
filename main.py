@@ -105,7 +105,7 @@ if __name__ == "__main__":
             sys.exit(1)
 
         cProfile.run(
-            "runMode(args.year, args.day, args.livemode, args.part)",
+            "runMode(args.year, args.day, args.livemode, args.part, args.inputFile)",
             # sort="tottime",
             sort="ncalls",
         )
