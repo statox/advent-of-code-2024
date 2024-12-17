@@ -2,11 +2,13 @@ import functools
 import inspect
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Generic, Literal, TypeVar
+from typing import Generic, Literal, TypeVar, Union
+
+PossibleAnswer = Union[int, str]
 
 
 class InvalidSolutionError(Exception):
-    def __init__(self, expected: int, actual: int):
+    def __init__(self, expected: PossibleAnswer, actual: PossibleAnswer):
         self.expected = expected
         self.actual = actual
         message = f"Invalid solution: Expected {expected}, but got {actual}"
@@ -18,7 +20,10 @@ class InvalidSolutionOptions(Exception):
         super().__init__(f"Invalid solution options: {message}")
 
 
-def answer(expectedAnswerTest: int, expectedAnswerLivemode: int):
+def answer(
+    expectedAnswerTest: PossibleAnswer | None,
+    expectedAnswerLivemode: PossibleAnswer | None,
+):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
@@ -27,10 +32,9 @@ def answer(expectedAnswerTest: int, expectedAnswerLivemode: int):
             )
             res = func(self, *args, **kwargs)
 
-            if res != expectedAnswer:
+            if expectedAnswer is not None and res != expectedAnswer:
                 raise InvalidSolutionError(expected=expectedAnswer, actual=res)
 
-            # setattr(self, "failedWith", expectedAnswer)
             return res
 
         return wrapper
@@ -134,11 +138,11 @@ class BaseSolution(Generic[ParsedInput]):
         raise NotImplementedError
 
     @answer(0, 0)
-    def part1(self) -> int:
+    def part1(self) -> PossibleAnswer:
         raise NotImplementedError
 
     @answer(0, 0)
-    def part2(self) -> int:
+    def part2(self) -> PossibleAnswer:
         raise NotImplementedError
 
     def runPart(self, which: Literal["one", "two", "both"]):

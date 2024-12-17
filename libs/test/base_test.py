@@ -38,6 +38,18 @@ class NotWorkingDecoratedSolution(BaseSolution):
         return -1
 
 
+class DecoratedWithNoneSolution(BaseSolution):
+    @answer(None, None)
+    def part1(self):
+        return 10
+
+
+class DecoratedWithStrSolution(BaseSolution):
+    @answer("foo", "bar")
+    def part1(self):
+        return "foo"
+
+
 class NoAnswerDecoratorSolution(BaseSolution):
     def part1(self):
         return 1
@@ -71,6 +83,17 @@ class AnswerDecorator_Tests(unittest.TestCase):
         NoAnswerDecoratorSolution(SolutionOptions(True)).part1()
         NoAnswerDecoratorSolution(SolutionOptions(False)).part2()
         NoAnswerDecoratorSolution(SolutionOptions(True)).part2()
+
+    def test_decorated_with_none_answer(self):
+        """Solution decorated with none should not throw"""
+        DecoratedWithNoneSolution(SolutionOptions(False)).part1()
+        DecoratedWithNoneSolution(SolutionOptions(True)).part1()
+
+    def test_decoration_str_answer(self):
+        """Solution should be able to return and validate string result"""
+        DecoratedWithStrSolution(SolutionOptions(False)).part1()
+        with self.assertRaises(InvalidSolutionError):
+            DecoratedWithStrSolution(SolutionOptions(True)).part1()
 
 
 #
