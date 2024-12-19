@@ -49,6 +49,14 @@ parser.add_argument(
     action="store_true",
     help="Profile the code to run",
 )
+parser.add_argument(
+    "-pm",
+    "--profile-metric",
+    dest="profile_metric",
+    type=str,
+    choices=["tottime", "ncalls", "cumtime"],
+    help="Metric to use to sort the profiler's results",
+)
 
 # Make -l and -b mutually exclusive
 modesGroup = parser.add_mutually_exclusive_group()
@@ -94,6 +102,10 @@ def runMode(
 if __name__ == "__main__":
     args = parser.parse_args()
 
+    if args.profile_metric and not args.profile:
+        print("--profile must be provided if --profile-metric (--pm) is provided")
+        sys.exit(1)
+
     if args.profile:
         if args.part is None:
             print("Can't profile several parts at once. --profile must come with -p")
@@ -106,8 +118,7 @@ if __name__ == "__main__":
 
         cProfile.run(
             "runMode(args.year, args.day, args.livemode, args.part, args.inputFile)",
-            # sort="tottime",
-            sort="ncalls",
+            sort=args.profile_metric or "tottime",
         )
     elif args.bothmode:
         runMode(args.year, args.day, False, args.part, args.inputFile)
