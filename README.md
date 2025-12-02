@@ -1,4 +1,4 @@
-# Advent of code 2024
+# Advent of code 2024/2025
 
 ## Add a solution for a new day
 
@@ -16,14 +16,14 @@
 
 Usage:
 
-| Parameter         | Optional | Value    | Comment                                                                                                                                        |
-| ----------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-d [day]`        | No       | `{1,24}` | The day to run without the leading `0` e.g. `-d4`                                                                                              |
-| `-y [year]`       | Yes      | `[1-9]`  | The year of the day to run e.g `-y2023`                                                                                                        |
-| `-p [part]`       | Yes      | `1,2`    | If omitted both parts are run.                                                                                                                 |
-| `-i [input file]` | Yes      | `[1-9]`  | A number corresponding to the filename of an alternative input file e.g `-i1` to parse `input_test_1`                                          |
-| `[--livemode]`    | Yes      |          | if present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`and `-i`                               |
-| `[--bothmode]`    | Yes      |          | if present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]` |
+| Parameter                  | Optional | Value    | Comment                                                                                                                                        |
+| -------------------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-d [day]`                 | No       | `{1,24}` | The day to run without the leading `0` e.g. `-d4`                                                                                              |
+| `-y [year]`                | Yes      | `[1-9]`  | The year of the day to run e.g `-y2023`                                                                                                        |
+| `-p [part]`                | Yes      | `1,2`    | If omitted both parts are run.                                                                                                                 |
+| `-i [input file]`          | Yes      | `[1-9]`  | A number corresponding to the filename of an alternative input file e.g `-i1` to parse `input_test_1`                                          |
+| `[--livemode]` (or `-l`)   | Yes      |          | If present reads the `input` file, if not reads the `input_test`. Mutually exclusive with `[--bothmode]`and `-i`                               |
+| `[--bothmode]` (or `-b`)   | Yes      |          | If present runs the solution for both `input` and `input_test`. If absent, `[--livemode]` is evaluated. Mutually exclusive with `[--livemode]` |
 
 ## Solution's input
 
