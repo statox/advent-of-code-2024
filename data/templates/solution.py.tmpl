@@ -1,15 +1,20 @@
+from typing import override
+
 from ...base import BaseSolution, answer
 
 
 class Solution(BaseSolution):
+    @override
     def parseInput(self):
         pass
 
     @answer(None, None)
+    @override
     def part1(self):
         [print(line) for line in self.lines]
         return 1
 
     # @answer(None, None)
+    # @override
     # def part2(self):
         # return 1
