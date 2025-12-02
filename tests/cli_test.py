@@ -24,10 +24,12 @@ def pick_python() -> str:
 ROOT_DIR = Path(__file__).parents[1]
 PROCESS = f"{pick_python()} {ROOT_DIR / 'main.py'}"
 
+current_year = datetime.now().year
+
 
 def make_args(
     day: int,
-    year: int = datetime.now().year,
+    year: int = current_year,
     bothmodes: bool = False,
     livemode: bool = False,
     part: int = -1,
@@ -42,7 +44,7 @@ def make_args(
 
 def make_command(
     day: int,
-    year: int = datetime.now().year,
+    year: int = current_year,
     bothmodes: bool = False,
     livemode: bool = False,
     part: int = -1,
@@ -52,7 +54,7 @@ def make_command(
 
 def get_process(
     day: int,
-    year: int = datetime.now().year,
+    year: int = current_year,
     bothmodes: bool = False,
     livemode: bool = False,
     part: int = -1,
