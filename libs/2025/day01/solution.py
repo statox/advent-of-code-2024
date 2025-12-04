@@ -1,8 +1,11 @@
+from typing import override
+
 from ...base import BaseSolution, answer
 
 
-class Solution(BaseSolution):
+class Solution(BaseSolution[None]):
     @answer(3, 1147)
+    @override
     def part1(self):
         total = 0
         pos = 50
@@ -24,6 +27,7 @@ class Solution(BaseSolution):
         return total
 
     @answer(6, 6789)
+    @override
     def part2(self):
         total = 0
         pos = 50
