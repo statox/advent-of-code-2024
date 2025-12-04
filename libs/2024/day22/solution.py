@@ -87,7 +87,6 @@ class Solution(BaseSolution):
 
                 seen_changes.add(changes)
                 orders_gains[changes] += digit
-                if best_gain < orders_gains[changes]:
-                    best_gain = orders_gains[changes]
+                best_gain = max(best_gain, orders_gains[changes])
 
         return best_gain

@@ -1,4 +1,3 @@
-import math
 from typing import NamedTuple
 
 from ...base import BaseSolution, answer

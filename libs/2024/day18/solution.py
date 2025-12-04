@@ -60,9 +60,10 @@ class Solution(BaseSolution[Input]):
         (positions, bound) = self.parsedInput
         nbFalls = 1024 if self.livemode else 12
 
-        g: list[list[str]] = []
-        for _ in range(int(bound.imag) + 1):
-            g.append(["." for _ in range(int(bound.real) + 1)])
+        g = [
+            ["." for _ in range(int(bound.real) + 1)]
+            for _ in range(int(bound.imag) + 1)
+        ]
 
         for bytePos in positions[:nbFalls]:
             g[int(bytePos.imag)][int(bytePos.real)] = "#"
@@ -74,9 +75,10 @@ class Solution(BaseSolution[Input]):
     def part2(self):
         (positions, bound) = self.parsedInput
 
-        g: list[list[str]] = []
-        for _ in range(int(bound.imag) + 1):
-            g.append(["." for _ in range(int(bound.real) + 1)])
+        g = [
+            ["." for _ in range(int(bound.real) + 1)]
+            for _ in range(int(bound.imag) + 1)
+        ]
 
         for bytePos in positions:
             g[int(bytePos.imag)][int(bytePos.real)] = "#"

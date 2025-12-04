@@ -13,11 +13,7 @@ def isValidReport(report):
         # print('diff more than 3', report)
         return False
 
-    if min(diffs) < 1:
-        # print('diff less than 1', report)
-        return False
-
-    return True
+    return min(diffs) >= 1
 
 
 class Solution(BaseSolution):

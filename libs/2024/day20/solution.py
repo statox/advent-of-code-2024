@@ -1,6 +1,5 @@
-from collections import deque
 from itertools import combinations
-from typing import NamedTuple, Optional
+from typing import NamedTuple, override
 
 from ...base import BaseSolution, answer
 
@@ -18,7 +17,7 @@ W = -1 + 0j
 directions = [N, E, S, W]
 
 
-def getCell(g: list[list[str]], p: complex, bound: Optional[complex] = None):
+def getCell(g: list[list[str]], p: complex, bound: complex | None = None):
     if bound is None:
         bound = len(g[0]) + len(g) * 1j
 
@@ -28,6 +27,7 @@ def getCell(g: list[list[str]], p: complex, bound: Optional[complex] = None):
 
 
 class Solution(BaseSolution[Input]):
+    @override
     def parseInput(self):
         start: complex = -1
         end: complex = -1
@@ -102,6 +102,7 @@ class Solution(BaseSolution[Input]):
         return path
 
     @answer(5, 1448)
+    @override
     def part1(self):
         (g, _, _) = self.parsedInput
 
@@ -161,6 +162,7 @@ class Solution(BaseSolution[Input]):
         return total
 
     @answer(285, 1017615)
+    @override
     def part2(self):
         (g, _, _) = self.parsedInput
 

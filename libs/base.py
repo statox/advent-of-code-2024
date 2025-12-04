@@ -2,9 +2,9 @@ import functools
 import inspect
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Generic, Literal, TypeVar, Union
+from typing import Generic, Literal, TypeVar
 
-PossibleAnswer = Union[int, str]
+PossibleAnswer = int | str
 
 
 class InvalidSolutionError(Exception):

@@ -106,7 +106,7 @@ class CustomArgumentParser(ArgumentParser):
 def getSolution(year: str, day: int, livemode: bool, inputFile: int | None):
     try:
         path = f"libs.{year}.day{day:02}.solution"
-        solution_class = cast(Type[BaseSolution], import_module(path).Solution)
+        solution_class = cast("Type[BaseSolution]", import_module(path).Solution)
     except ModuleNotFoundError:
         print(f"ERROR: Day {args.day}/{year} is not implemented")
         sys.exit(1)
