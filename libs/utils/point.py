@@ -1,49 +1,61 @@
-class Point:
-    x: int
-    y: int
+from __future__ import (
+    annotations,  # This allows to type parameters as Point in the methods
+)
 
-    def __init__(self, x, y):
+from typing import override
+
+
+class Point:
+    x: int | float
+    y: int | float
+
+    def __init__(self, x: int | float, y: int | float):
         self.x = x
         self.y = y
 
-    def __add__(self, other):
+    def __add__(self, other: Point):
         return Point(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: Point):
         return Point(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, multiplier):
+    def __mul__(self, multiplier: int | float):
         """For x * 2"""
         return Point(self.x * multiplier, self.y * multiplier)
 
-    def __rmul__(self, multiplier):
+    def __rmul__(self, multiplier: int | float):
         """For 2 * x"""
         return Point(self.x * multiplier, self.y * multiplier)
 
-    def __floordiv__(self, dividor):
+    def __floordiv__(self, dividor: int | float):
         """For the // operator, returns ints"""
         return Point(self.x // dividor, self.y // dividor)
 
-    def __truediv__(self, dividor):
+    def __truediv__(self, dividor: int | float):
         """For the / operator, returns floats"""
         return Point(self.x / dividor, self.y / dividor)
 
+    @override
     def __str__(self):
         return f"({self.x}, {self.y})"
 
-    def __eq__(self, other):
+    @override
+    def __eq__(self, other: object):
+        if not isinstance(other, Point):
+            return False
         return self.x == other.x and self.y == other.y
 
+    @override
     def __hash__(self):
         return hash((self.x, self.y))
 
-    def isInBound(self, bound):
+    def isInBound(self, bound: Point):
         return self.x >= 0 and self.y >= 0 and self.x <= bound.x and self.y <= bound.y
 
     def isInteger(self):
         return isinstance(self.x, int) and isinstance(self.y, int)
 
-    def distance_squared(self, other: "Point") -> float:
+    def distance_squared(self, other: Point) -> float:
         """
         Calculate the squared distance between this point and another point.
 
