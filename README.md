@@ -46,3 +46,23 @@ I created the tests to make sure my `BaseSolution` class and `main.py` were corr
 ```shell
 python -m unittest **/*_test.py
 ```
+
+## Run all solutions in the repo
+
+```shell
+run_all.py
+```
+
+This will run part 1 and 2 of all solutions, displaying at the end which part are potentially broken or not implemented. That will skip days which haven't been created at all.
+
+## Lints and checks
+
+
+```
+# Formating
+uv run ruff format .
+# Linting
+uv run ruff check .
+# Types
+uv run pyright
+```
