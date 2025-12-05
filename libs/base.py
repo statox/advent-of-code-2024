@@ -27,9 +27,7 @@ def answer(
     def decorator(func):
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
-            expectedAnswer = (
-                expectedAnswerLivemode if self.livemode else expectedAnswerTest
-            )
+            expectedAnswer = expectedAnswerLivemode if self.livemode else expectedAnswerTest
             res = func(self, *args, **kwargs)
 
             if expectedAnswer is not None and res != expectedAnswer:
@@ -82,19 +80,13 @@ class BaseSolution(Generic[ParsedInput]):
         self.lines_alt = None
 
         if options.lines is not None and options.livemode:
-            raise InvalidSolutionOptions(
-                "Can't specify both lines when livemode is true"
-            )
+            raise InvalidSolutionOptions("Can't specify both lines when livemode is true")
 
         if options.alternativeInputFile is not None and options.livemode:
-            raise InvalidSolutionOptions(
-                "Can't specify alternative input when livemode is true"
-            )
+            raise InvalidSolutionOptions("Can't specify alternative input when livemode is true")
 
         if options.lines is not None and options.alternativeInputFile is not None:
-            raise InvalidSolutionOptions(
-                "Can't specify both lines and alternativeInputFile"
-            )
+            raise InvalidSolutionOptions("Can't specify both lines and alternativeInputFile")
 
         if self.livemode:
             # In livemode always read the main input file
@@ -109,13 +101,9 @@ class BaseSolution(Generic[ParsedInput]):
             self.lines = read_input_file(inputPath)
         else:
             # If not in livemode and alternativeInputFile is specified try to use the corresponding file
-            alternativeInputFile = Path(
-                self.getOwnPath(), f"input_test_{options.alternativeInputFile}"
-            )
+            alternativeInputFile = Path(self.getOwnPath(), f"input_test_{options.alternativeInputFile}")
             if not alternativeInputFile.exists():
-                raise InvalidSolutionOptions(
-                    f"Specified alternative file not found: {alternativeInputFile}"
-                )
+                raise InvalidSolutionOptions(f"Specified alternative file not found: {alternativeInputFile}")
 
             self.lines = read_input_file(alternativeInputFile)
 
@@ -148,18 +136,12 @@ class BaseSolution(Generic[ParsedInput]):
     def runPart(self, which: Literal["one", "two", "both"]):
         if which in ["one", "both"]:
             res = self.part1()
-            print(
-                f"Result for day {self.day}/{self.year} - part 1 - livemode {self.livemode}: {res}"
-            )
+            print(f"Result for day {self.day}/{self.year} - part 1 - livemode {self.livemode}: {res}")
 
         if which in ["two", "both"]:
             if not self.livemode and self.lines_alt is not None:
-                print(
-                    "WARNING: Using input_test_2 file as input. Remove it if to use input_test instead."
-                )
+                print("WARNING: Using input_test_2 file as input. Remove it if to use input_test instead.")
                 self.lines = self.lines_alt
 
             res = self.part2()
-            print(
-                f"Result for day {self.day}/{self.year} - part 2 - livemode {self.livemode}: {res}"
-            )
+            print(f"Result for day {self.day}/{self.year} - part 2 - livemode {self.livemode}: {res}")

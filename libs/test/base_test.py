@@ -169,14 +169,10 @@ class InputSpecifications_Tests(unittest.TestCase):
     def test_unimplemented_solution(self):
         """Providing both forced input and alternative input file should raise"""
         with self.assertRaises(InvalidSolutionOptions):
-            DontTreatInputSolution(
-                SolutionOptions(False, lines=["foo"], alternativeInputFile=2)
-            )
+            DontTreatInputSolution(SolutionOptions(False, lines=["foo"], alternativeInputFile=2))
 
         with self.assertRaises(InvalidSolutionOptions):
-            DontTreatInputSolution(
-                SolutionOptions(True, lines=["foo"], alternativeInputFile=2)
-            )
+            DontTreatInputSolution(SolutionOptions(True, lines=["foo"], alternativeInputFile=2))
 
     def test_input_file_livemode_true_selection(self):
         """Livemode True should read the input file"""
@@ -194,9 +190,7 @@ class InputSpecifications_Tests(unittest.TestCase):
             DontTreatInputSolution(SolutionOptions(True, lines=["foo"]))
 
         """Livemode False should read the forced input"""
-        s = DontTreatInputSolution(
-            SolutionOptions(False, lines=["a", "forced", "input"])
-        )
+        s = DontTreatInputSolution(SolutionOptions(False, lines=["a", "forced", "input"]))
         self.assertEqual(s.lines, ["a", "forced", "input"])
 
     def test_alternative_input(self):

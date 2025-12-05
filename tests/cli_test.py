@@ -82,9 +82,7 @@ class Wrapper_Tests(unittest.TestCase):
         """Test for a not implemented day"""
         process = get_process(day=25, year=2024, livemode=False, part=1)
         self.assertEqual(process.returncode, 1)
-        self.assertEqual(
-            process.stdout.strip(), "ERROR: Day 25/2024 is not implemented"
-        )
+        self.assertEqual(process.stdout.strip(), "ERROR: Day 25/2024 is not implemented")
 
 
 class Part_Tests(unittest.TestCase):

@@ -86,19 +86,13 @@ class CustomArgumentParser(ArgumentParser):
         parsed = super().parse_args(args)
 
         if parsed.profile_metric and not parsed.profile:
-            self.error(
-                "--profile must be provided if --profile-metric (--pm) is provided"
-            )
+            self.error("--profile must be provided if --profile-metric (--pm) is provided")
 
         if parsed.profile:
             if parsed.part is None:
-                self.error(
-                    "Can't profile several parts at once. --profile must come with -p"
-                )
+                self.error("Can't profile several parts at once. --profile must come with -p")
             if parsed.bothmode:
-                self.error(
-                    "Can't profile several inputs at once. --profile must not come with -b"
-                )
+                self.error("Can't profile several inputs at once. --profile must not come with -b")
 
         return parsed
 
@@ -111,14 +105,10 @@ def getSolution(year: str, day: int, livemode: bool, inputFile: int | None):
         print(f"ERROR: Day {args.day}/{year} is not implemented")
         sys.exit(1)
 
-    return solution_class(
-        SolutionOptions(livemode, day, int(year), alternativeInputFile=inputFile)
-    )
+    return solution_class(SolutionOptions(livemode, day, int(year), alternativeInputFile=inputFile))
 
 
-def runMode(
-    year: str, day: int, livemode: bool, part: Optional[int], inputFile: Optional[int]
-):
+def runMode(year: str, day: int, livemode: bool, part: Optional[int], inputFile: Optional[int]):
     solution = getSolution(year, day, livemode, inputFile)
     if part is None:
         solution.runPart("both")
